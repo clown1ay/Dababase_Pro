@@ -1,0 +1,24 @@
+'''
+class Scan_Function(QtGui.QWidget):
+
+     def __init__(self):
+         super(Scan_Function, self).__init__()
+         self.initUI(parent = None)
+
+     def initUI(self):
+
+
+        self.edit = QtGui.QTextEdit(self)      # 创建多行文本框
+        self.edit.setReadOnly(True)
+        # 横向内容过长/过多，自动出现横/向滚动条；但是QT中貌似需要setWordWrapMode设置
+        self.edit.setText('Python--PyQt')
+        self.edit.append("hhhhh")
+        # ***.setGeometry 设置控件大小
+        self.edit.setGeometry(50,50,600,300)
+
+
+        # setGeometry(起点横坐标, 起点纵坐标, 宽, 高)
+        self.setGeometry(500, 300, 700, 500)
+        self.setWindowTitle('企业人事档案管理系统--信息浏览')
+        self.show()
+'''
