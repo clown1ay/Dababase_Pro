@@ -15,7 +15,7 @@ QTextCodec.setCodecForTr(code)
 QTextCodec.setCodecForCStrings(code)
 
 # QDialog
-class Scan_Page(QtGui.QWidget):
+class Scan_Page(QtGui.QDialog):
     """docstring for myDialog"""
     def __init__(self, arg=None):
         super(Scan_Page, self).__init__(arg)

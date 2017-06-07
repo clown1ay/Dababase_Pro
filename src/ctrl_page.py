@@ -14,14 +14,31 @@ QTextCodec.setCodecForLocale(code)
 QTextCodec.setCodecForTr(code)
 QTextCodec.setCodecForCStrings(code)
 
+
+try:
+    _fromUtf8 = QtCore.QString.fromUtf8
+except AttributeError:
+    def _fromUtf8(s):
+        return s
+
+try:
+    _encoding = QtGui.QApplication.UnicodeUTF8
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig, _encoding)
+except AttributeError:
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig)
+
 # 功能控制页
-class Ctrl_Page(QtGui.QWidget):
+class Ctrl_Function(QtGui.QDialog):
 
      def __init__(self):
-         super(Ctrl_Page, self).__init__()
+         super(Ctrl_Function, self).__init__()
          # self.initUI()
 
+     # def initUI(self, Dialog):
      def initUI(self):
+
 
         self.Scan_Button = QtGui.QPushButton('浏览全部', self)
         self.Scan_Button.move(200, 100)
@@ -41,25 +58,20 @@ class Ctrl_Page(QtGui.QWidget):
         self.furry_Button = QtGui.QPushButton('###', self)
         self.furry_Button.move(400, 300)
 
-
+        '''
         # setGeometry(起点横坐标, 起点纵坐标, 宽, 高)
         self.setGeometry(500, 300, 700, 500)
         self.setWindowTitle('企业人事档案管理系统')
         self.show()
-
+        '''
 
 def main():
     app = QtGui.QApplication(sys.argv)
-    ex = Ctrl_Page()
-    ex.initUI()
+    ui = Ctrl_Function()
+    ui.initUI()
+    ui.setGeometry(500, 300, 700, 500)
+    ui.show()
     sys.exit(app.exec_())
-    # app = QtGui.QApplication(sys.argv)
-    # Dialog = QtGui.QDialog()
-    # ui = Ctrl_Function()
-    # ui.initUI(Dialog)
-    # Dialog.show()
-    # sys.exit(app.exec_())
-
 
 
 if __name__ == '__main__':
