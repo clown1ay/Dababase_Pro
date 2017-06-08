@@ -19,8 +19,6 @@ cur = conn.cursor()
 cur.execute("use information_schema")
 cur.execute("select COLUMN_NAME from COLUMNS where TABLE_NAME = 'm_dadj';")
 m_dadj_column_names = cur.fetchall()
-# print str(m_dadj_column_names[0][0])
-# print m_dadj_column_names
 
 cur.execute("use HR_Manage")
 
@@ -32,15 +30,19 @@ def SQL_Scan():
     sqlstr = "SELECT * FROM m_dadj";
     count = cur.execute(sqlstr)
     res = cur.fetchall()
+    print res
+    # res = json.dumps(res)
+    '''
     for item in res:
         for i in range(1, len(item)):
             single_dict[str(m_dadj_column_names[i][0])] = i
         zgbm = "%03d"%int(item[0])
         data_dict[zgbm] = single_dict
         single_dict = {}
+    '''
     return_dict['length'] = int(count)
-    return_dict['data'] = data_dict
-    print return_dict
+    return_dict['data'] = res
+    # print len(return_dict['data'][0])
     return return_dict
 
 
@@ -117,9 +119,33 @@ def SQL_Count(index):
     return count_dict
 
 
+def SQL_Del(zgbm):
+    try:
+        sqlstr = "DELETE FROM m_dadj WHERE zgbm = %s" %zgbm
+        print sqlstr
+        cur.execute(sqlstr)
+        conn.commit()
+        print 111
+        return 1
+    except Exception, e:
+        print str(e.message)
+        return 0
+
+
+def SQL_Update(zgbm, column_name, update_content):
+    try:
+        sqlstr = "UPDATE m_dadj SET %s = '%s' WHERE zgbm = %s" %(column_name, update_content, zgbm)
+        # print sqlstr
+        cur.execute(sqlstr)
+        conn.commit()
+        return 1
+    except Exception, e:
+        print str(e.message)
+        return 0
+
 
 if __name__ == '__main__':
-    # Scan_SQL()
+    SQL_Scan()
     # SQL_Query_zgbm(1, '0')
     # SQL_Query_xm('张', '0')
-    SQL_Count('xb')
+    # SQL_Count('xb')
