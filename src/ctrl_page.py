@@ -80,7 +80,7 @@ class Ctrl_Function(QtGui.QDialog):
          self.hide()
          print '---'
          ui = Scan_Page()
-         ui.setGeometry(500, 300, 700, 500)
+         ui.setGeometry(500, 300, 700, 550)
          ui.Get_Info()
          ui.show()
          ui.exec_()
@@ -90,7 +90,7 @@ class Ctrl_Function(QtGui.QDialog):
         self.hide()
         print '---'
         ui = Query_Page()
-        ui.setGeometry(500, 300, 700, 500)
+        ui.setGeometry(500, 300, 700, 550)
         ui.show()
         ui.exec_()
         self.show()

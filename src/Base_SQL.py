@@ -5,7 +5,10 @@
 # import MySQLdb
 import pymysql
 import time
-import json
+import Base_init
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 # 获取系统时间 time.strftime('%Y-%m-%d-%H:%M',time.localtime(time.time()))
 
@@ -101,28 +104,29 @@ def SQL_Query_xm(xm, ttype):
 
 
 def SQL_Count(index):
-    count_dict = {}
+    return_dict = {}
     if index == 'xb':
-        sqlstr_1 = "SELECT DISTINCT(xb),COUNT(*), m_dadj.* FROM m_dadj GROUP BY xb"
+        sqlstr_1 = "SELECT DISTINCT(xb),COUNT(*) FROM m_dadj GROUP BY xb"
     elif index == 'bmbm':
         sqlstr_1 = "SELECT DISTINCT(bmbm),COUNT(*) FROM m_dadj GROUP BY bmbm"
     elif index == 'whcd':
         sqlstr_1 = "SELECT DISTINCT(whcd),COUNT(*) FROM m_dadj GROUP BY whcd"
-    elif index == 'zw':
-        sqlstr_1 = "SELECT DISTINCT(zw),COUNT(*) FROM m_dadj GROUP BY zw"
+    elif index == 'zcbm':
+        sqlstr_1 = "SELECT DISTINCT(zcbm),COUNT(*) FROM m_dadj GROUP BY zcbm"
     elif index == 'sum':
         sqlstr_1 = "SELECT COUNT(*) FROM m_dadj"
     count = cur.execute(sqlstr_1)
+    print count
     res = cur.fetchall()
+    print res
     if index == 'sum':
-        count_dict['length'] = 1
-        count_dict['sum'] = int(res[0][0])
+        return_dict['length'] = int(count)
+        return_dict['data'] = [('sum', res[0][0])]
     else:
-        for item in res:
-            count_dict[item[0]] = int(item[1])
-        count_dict['length'] = int(count)
-    print count_dict
-    return count_dict
+        return_dict['length'] = int(count)
+        return_dict['data'] = res
+    print return_dict
+    return return_dict
 
 
 def SQL_Del(zgbm):
@@ -140,6 +144,13 @@ def SQL_Del(zgbm):
 
 
 def SQL_Update(zgbm, column_name, update_content):
+    update_content = str(update_content)
+    if column_name == 'zcbm':
+        update_content = Base_init.Input_zcbm[update_content]
+    elif column_name == 'bmbm':
+        update_content = Base_init.Input_bmbm[update_content]
+    elif column_name == 'whcd':
+        update_content = Base_init.Input_whbm[update_content]
     try:
         sqlstr = "UPDATE m_dadj SET %s = '%s' WHERE zgbm = %s" %(column_name, update_content, zgbm)
         # print sqlstr
@@ -164,6 +175,6 @@ def SQL_Insert(xm, xb,mz, csny, hyzk, whcd, jkzk,zzmm,zc,jg,sfzh,byxx,zytc,hkszd
 
 if __name__ == '__main__':
     SQL_Scan()
-    SQL_Query_zgbm(1, '1')
+    # SQL_Query_zgbm(1, '1')
     # SQL_Query_xm('张', '0')
-    # SQL_Count('xb')
+    SQL_Count('sum')

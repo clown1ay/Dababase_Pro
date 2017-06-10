@@ -73,6 +73,9 @@ class Query_Page(QtGui.QDialog):
         self.InputEdit = QtGui.QLineEdit(self)
         self.InputEdit.move(450, 390)
 
+        self.Info = QtGui.QLabel('注：1.文化程度：本科、大专、硕士、博士、博士后;\n2.职称：处长、局长、科长、科员、实习;\n3.部门:培训部、外联部、项目部、人事部、财务部',self)
+        self.Info.move(100, 480)
+
 
         # self.setGeometry(500, 300, 700, 500)
         self.setWindowTitle('企业人事档案信息浏览')
@@ -161,7 +164,7 @@ class Query_Page(QtGui.QDialog):
 def main():
     app = QtGui.QApplication(sys.argv)
     ex = Query_Page()
-    ex.setGeometry(500, 300, 700, 500)
+    ex.setGeometry(500, 300, 700, 550)
     ex.show()
     sys.exit(app.exec_())
 

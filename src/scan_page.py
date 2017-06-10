@@ -39,12 +39,12 @@ class Scan_Page(QtGui.QDialog):
         self.tableView.setModel(self.model)
         self.tableView.setGeometry(QtCore.QRect(0, 0, 700, 400))
 
-        self.Ctrlpage_Button = QtGui.QPushButton('回首页', self)
-        self.Ctrlpage_Button.move(100, 430)
+        # self.Ctrlpage_Button = QtGui.QPushButton('回首页', self)
+        # self.Ctrlpage_Button.move(100, 430)
         # self.Ctrlpage_Button.clicked.connect(self.exec_())
 
         self.Del_Button = QtGui.QPushButton('Delete', self)
-        self.Del_Button.move(230, 430)
+        self.Del_Button.move(100, 430)
         self.Del_Button.clicked.connect(self.Del_Button_Event)
 
         self.Update_Button = QtGui.QPushButton('Update', self)
@@ -54,6 +54,8 @@ class Scan_Page(QtGui.QDialog):
         self.UpdateEdit = QtGui.QLineEdit(self)
         self.UpdateEdit.move(450, 430)
 
+        self.Info = QtGui.QLabel('注：1.文化程度：本科、大专、硕士、博士、博士后;\n2.职称：处长、局长、科长、科员、实习;\n3.部门:培训部、外联部、项目部、人事部、财务部',self)
+        self.Info.move(100, 470)
 
         # self.setGeometry(500, 300, 700, 500)
         self.setWindowTitle('企业人事档案信息浏览')
@@ -110,7 +112,7 @@ class Scan_Page(QtGui.QDialog):
 def main():
     app = QtGui.QApplication(sys.argv)
     ex = Scan_Page()
-    ex.setGeometry(500, 300, 700, 500)
+    ex.setGeometry(500, 300, 700, 550)
     ex.Get_Info()
     ex.show()
     sys.exit(app.exec_())
