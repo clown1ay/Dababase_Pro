@@ -59,14 +59,16 @@ def SQL_Query_zgbm(zgbm, ttype):
         print sqlstr
     count = cur.execute(sqlstr)
     res = cur.fetchall()
+    '''
     for item in res:
         for i in range(1, len(item)):
             single_dict[str(m_dadj_column_names[i][0])] = i
         zgbm = "%03d"%int(item[0])
         data_dict[zgbm] = single_dict
         single_dict = {}
+    '''
     return_dict['length'] = int(count)
-    return_dict['data'] = data_dict
+    return_dict['data'] = res
     print return_dict
     return return_dict
 
@@ -76,20 +78,24 @@ def SQL_Query_xm(xm, ttype):
     single_dict = {}
     data_dict = {}
     return_dict = {}
+    print ttype
     if ttype == '1':
         sqlstr = "SELECT * FROM m_dadj WHERE xm = '%s'" %xm
     else:
         sqlstr = "SELECT * FROM m_dadj WHERE xm like '%%%s%%'" %xm
+    print sqlstr
     count = cur.execute(sqlstr)
     res = cur.fetchall()
+    '''
     for item in res:
         for i in range(1, len(item)):
             single_dict[str(m_dadj_column_names[i][0])] = i
         zgbm = "%03d"%int(item[0])
         data_dict[zgbm] = single_dict
         single_dict = {}
+    '''
     return_dict['length'] = int(count)
-    return_dict['data'] = data_dict
+    return_dict['data'] = res
     print return_dict
     return return_dict
 
@@ -125,10 +131,11 @@ def SQL_Del(zgbm):
         print sqlstr
         cur.execute(sqlstr)
         conn.commit()
-        print 111
+        print '----------------------------------'
         return 1
     except Exception, e:
         print str(e.message)
+        print '-------------------------------'
         return 0
 
 
@@ -146,6 +153,6 @@ def SQL_Update(zgbm, column_name, update_content):
 
 if __name__ == '__main__':
     SQL_Scan()
-    # SQL_Query_zgbm(1, '0')
+    SQL_Query_zgbm(1, '1')
     # SQL_Query_xm('张', '0')
     # SQL_Count('xb')

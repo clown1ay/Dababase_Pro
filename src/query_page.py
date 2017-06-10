@@ -17,15 +17,18 @@ QTextCodec.setCodecForTr(code)
 QTextCodec.setCodecForCStrings(code)
 
 # QDialog
-class Scan_Page(QtGui.QDialog):
+class Query_Page(QtGui.QDialog):
     """docstring for myDialog"""
 
     Delete_function_signal = QtCore.pyqtSignal()
     Update_function_signal = QtCore.pyqtSignal()
-    # Ctrlpage_function_signal = QtCore.pyqtSignal()
+    xm_Extract_function_signal = QtCore.pyqtSignal()
+    xb_flurry_function_signal = QtCore.pyqtSignal()
+    xb_Extract_function_signal = QtCore.pyqtSignal()
+    xm_flurry_function_signal = QtCore.pyqtSignal()
 
     def __init__(self, arg=None):
-        super(Scan_Page, self).__init__(arg)
+        super(Query_Page, self).__init__(arg)
         # https://www.zhaokeli.com/article/7986.html
 
         self.model=QStandardItemModel(4,4);
@@ -34,31 +37,46 @@ class Scan_Page(QtGui.QDialog):
 
         self.tableView=QTableView(self);
         self.tableView.setModel(self.model)
-        self.tableView.setGeometry(QtCore.QRect(0, 0, 700, 400))
+        self.tableView.setGeometry(QtCore.QRect(0, 0, 700, 350))
 
-        self.Ctrlpage_Button = QtGui.QPushButton('回首页', self)
-        self.Ctrlpage_Button.move(100, 430)
-        # self.Ctrlpage_Button.clicked.connect(self.exec_())
+        self.xm_Extract_Button = QtGui.QPushButton('姓名精确查询', self)
+        self.xm_Extract_Button.move(100, 450)
+        self.xm_Extract_Button.clicked.connect(self.xm_Extract_Query)
+
+        self.xm_Flurry_Button = QtGui.QPushButton('姓名模糊查询', self)
+        self.xm_Flurry_Button.move(220, 450)
+        self.xm_Flurry_Button.clicked.connect(self.xm_Flurry_Query)
+
+        self.zgbm_Extract_Button = QtGui.QPushButton('编码精确查询', self)
+        self.zgbm_Extract_Button.move(340, 450)
+        self.zgbm_Extract_Button.clicked.connect(self.zgbm_Extract_Query)
+
+        self.zgbm_Flurry_Button = QtGui.QPushButton('编码模糊查询', self)
+        self.zgbm_Flurry_Button.move(460, 450)
+        self.zgbm_Flurry_Button.clicked.connect(self.zgbm_Flurry_Query)
+
 
         self.Del_Button = QtGui.QPushButton('Delete', self)
-        self.Del_Button.move(230, 430)
+        self.Del_Button.move(100, 390)
         self.Del_Button.clicked.connect(self.Del_Button_Event)
 
         self.Update_Button = QtGui.QPushButton('Update', self)
-        self.Update_Button.move(360, 430)
+        self.Update_Button.move(220, 390)
         self.Update_Button.clicked.connect(self.Update_Button_Event)
 
-        self.UpdateEdit = QtGui.QLineEdit(self)
-        self.UpdateEdit.move(450, 430)
+        self.user = QtGui.QLabel('请输入：', self)
+        self.user.move(390, 390)
+
+        self.InputEdit = QtGui.QLineEdit(self)
+        self.InputEdit.move(450, 390)
 
 
         # self.setGeometry(500, 300, 700, 500)
         self.setWindowTitle('企业人事档案信息浏览')
         # self.show()
 
-    def Get_Info(self):
+    def Set_Info(self, Info_dict):
         # 后续添加从数据库获取数据
-        Info_dict = Base_SQL.SQL_Scan()
         length = Info_dict['length']
         for row in range(length):
             for column in range(31):
@@ -70,6 +88,35 @@ class Scan_Page(QtGui.QDialog):
                 self.model.setItem(row, column, item)
 
 
+    def xm_Extract_Query(self):
+        xm = self.InputEdit.text()
+        # 1精确， 2 模糊
+        Info_dict = Base_SQL.SQL_Query_xm(xm, '1')
+        self.Set_Info(Info_dict)
+
+
+    def xm_Flurry_Query(self):
+        xm = self.InputEdit.text()
+        # print xm
+        # 1精确， 2 模糊
+        Info_dict = Base_SQL.SQL_Query_xm(xm, '2')
+        self.Set_Info(Info_dict)
+
+    def zgbm_Extract_Query(self):
+        zgbm = self.InputEdit.text()
+        print zgbm
+        # 1精确， 2 模糊
+        Info_dict = Base_SQL.SQL_Query_zgbm(zgbm, '1')
+        self.Set_Info(Info_dict)
+
+    def zgbm_Flurry_Query(self):
+        zgbm = self.InputEdit.text()
+        print zgbm
+        # 1精确， 2 模糊
+        Info_dict = Base_SQL.SQL_Query_zgbm(zgbm, '2')
+        self.Set_Info(Info_dict)
+
+
     def Del_Button_Event(self):
         row = self.tableView.currentIndex().row()
         column = self.tableView.currentIndex().column()
@@ -77,7 +124,7 @@ class Scan_Page(QtGui.QDialog):
         print zgbm
         print row
         # 删除功能，在这里获取到ID，从库内删除
-        # Base_SQL.SQL_Del(zgbm)
+        Base_SQL.SQL_Del(zgbm)
         self.model.removeRow(row)
         print '删除成功！'
 
@@ -91,7 +138,7 @@ class Scan_Page(QtGui.QDialog):
 
         zgbm = self.model.data(self.model.index(row, 0)).toString()
 
-        update_content = self.UpdateEdit.text()
+        update_content = self.InputEdit.text()
         Qupdate_content = QStandardItem(update_content)
         self.model.setItem(row, column, Qupdate_content)
         # 根据zgbm, updaet_content 和 column_name 转意后字段名称，修改数据库
@@ -100,11 +147,12 @@ class Scan_Page(QtGui.QDialog):
         print '修改成功！ '
 
 
+
+
 def main():
     app = QtGui.QApplication(sys.argv)
-    ex = Scan_Page()
+    ex = Query_Page()
     ex.setGeometry(500, 300, 700, 500)
-    ex.Get_Info()
     ex.show()
     sys.exit(app.exec_())
 

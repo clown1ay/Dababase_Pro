@@ -6,6 +6,8 @@ from PyQt4.QtCore import *
 from PyQt4 import QtGui
 from PyQt4 import QtCore
 from scan_page import Scan_Page
+from query_page import Query_Page
+from insert_page import Insert_Page
 
 
   # PyQt4中文显示
@@ -33,7 +35,9 @@ except AttributeError:
 # 功能控制页
 class Ctrl_Function(QtGui.QDialog):
 
-     Scanl_function_signal = QtCore.pyqtSignal()
+     Scan_function_signal = QtCore.pyqtSignal()
+     Query_function_signal = QtCore.pyqtSignal()
+     Insert_function_signal = QtCore.pyqtSignal()
 
      def __init__(self):
          super(Ctrl_Function, self).__init__()
@@ -54,9 +58,11 @@ class Ctrl_Function(QtGui.QDialog):
 
         self.Query_Button = QtGui.QPushButton('查询', self)
         self.Query_Button.move(400, 100)
+        self.Query_Button.clicked.connect(self.Query_Button_Event)
 
         self.Insert_Button = QtGui.QPushButton('录入', self)
         self.Insert_Button.move(400, 200)
+        self.Insert_Button.clicked.connect(self.Insert_Button_Event)
 
         self.furry_Button = QtGui.QPushButton('###', self)
         self.furry_Button.move(400, 300)
@@ -78,6 +84,27 @@ class Ctrl_Function(QtGui.QDialog):
          ui.Get_Info()
          ui.show()
          ui.exec_()
+         self.show()
+
+     def Query_Button_Event(self):
+        self.hide()
+        print '---'
+        ui = Query_Page()
+        ui.setGeometry(500, 300, 700, 500)
+        ui.show()
+        ui.exec_()
+        self.show()
+
+     def Insert_Button_Event(self):
+        print '===='
+        self.hide()
+        ui = Insert_Page()
+        ui.setGeometry(500, 300, 750, 500)
+        ui.initUI()
+        ui.show()
+        ui.exec_()
+        self.show()
+
 
 def main():
     app = QtGui.QApplication(sys.argv)
