@@ -7,6 +7,9 @@ from PyQt4 import QtGui
 from PyQt4 import QtCore
 import Base_SQL
 import Base_init
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 
   # PyQt4中文显示
@@ -83,6 +86,12 @@ class Query_Page(QtGui.QDialog):
                 index_str = Info_dict['data'][row][column]
                 if column == 0:
                     index_str = str(index_str)
+                elif column == 6:
+                    index_str = Base_init.Read_whbm[str(index_str)]
+                elif column == 9:
+                    index_str = Base_init.Read_zcbm[str(index_str)]
+                elif column == 30:
+                    index_str = Base_init.Read_bmbm[str(index_str)]
                 # print index_str
                 item = QStandardItem(index_str)
                 self.model.setItem(row, column, item)
