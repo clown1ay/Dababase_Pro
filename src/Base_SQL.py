@@ -33,8 +33,7 @@ def SQL_Scan():
     sqlstr = "SELECT * FROM m_dadj";
     count = cur.execute(sqlstr)
     res = cur.fetchall()
-    print res
-    # res = json.dumps(res)
+    # print res
     '''
     for item in res:
         for i in range(1, len(item)):

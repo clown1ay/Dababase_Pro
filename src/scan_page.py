@@ -7,6 +7,7 @@ from PyQt4 import QtGui
 from PyQt4 import QtCore
 import Base_SQL
 import Base_init
+import Tofile
 import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -25,7 +26,7 @@ class Scan_Page(QtGui.QDialog):
 
     Delete_function_signal = QtCore.pyqtSignal()
     Update_function_signal = QtCore.pyqtSignal()
-    # Ctrlpage_function_signal = QtCore.pyqtSignal()
+    toFile_function_signal = QtCore.pyqtSignal()
 
     def __init__(self, arg=None):
         super(Scan_Page, self).__init__(arg)
@@ -39,20 +40,20 @@ class Scan_Page(QtGui.QDialog):
         self.tableView.setModel(self.model)
         self.tableView.setGeometry(QtCore.QRect(0, 0, 700, 400))
 
-        # self.Ctrlpage_Button = QtGui.QPushButton('回首页', self)
-        # self.Ctrlpage_Button.move(100, 430)
-        # self.Ctrlpage_Button.clicked.connect(self.exec_())
+        self.toFile_Button = QtGui.QPushButton('导出数据', self)
+        self.toFile_Button.move(100, 430)
+        self.toFile_Button.clicked.connect(self.toFile_Button_Event)
 
         self.Del_Button = QtGui.QPushButton('Delete', self)
-        self.Del_Button.move(100, 430)
+        self.Del_Button.move(210, 430)
         self.Del_Button.clicked.connect(self.Del_Button_Event)
 
         self.Update_Button = QtGui.QPushButton('Update', self)
-        self.Update_Button.move(360, 430)
+        self.Update_Button.move(320, 430)
         self.Update_Button.clicked.connect(self.Update_Button_Event)
 
         self.UpdateEdit = QtGui.QLineEdit(self)
-        self.UpdateEdit.move(450, 430)
+        self.UpdateEdit.move(420, 430)
 
         self.Info = QtGui.QLabel('注：1.文化程度：本科、大专、硕士、博士、博士后;\n2.职称：处长、局长、科长、科员、实习;\n3.部门:培训部、外联部、项目部、人事部、财务部',self)
         self.Info.move(100, 470)
@@ -79,6 +80,11 @@ class Scan_Page(QtGui.QDialog):
                 # print index_str
                 item = QStandardItem(index_str)
                 self.model.setItem(row, column, item)
+
+    def toFile_Button_Event(self):
+        Info_dict = Base_SQL.SQL_Scan()
+        Tofile.Gene_file('All_data', Info_dict['data'])
+
 
 
     def Del_Button_Event(self):

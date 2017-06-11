@@ -1,5 +1,7 @@
  #-*-coding:utf-8-*-
 import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 SQL_column_name = ['zgbm', 'xm', 'xb','mz', 'csny', 'hyzk', 'whcd', 'jkzk','zzmm','zcbm','jg','sfzh','byxx','zytc','hkszd','hkxz','xzz','zw','gzm','jspx','jlcf','smwt','tbrqm','tbrq','gsyj','scrq','ryxz','rcsj','ryzt','bz','bmbm']
 

@@ -49,26 +49,26 @@ class Ctrl_Function(QtGui.QDialog):
      def initUI(self):
 
 
-        self.Scan_Button = QtGui.QPushButton('浏览全部', self)
+        self.Scan_Button = QtGui.QPushButton('档案浏览', self)
         self.Scan_Button.move(200, 100)
         self.Scan_Button.clicked.connect(self.Scan_Button_Event)
 
-        self.Count_Button = QtGui.QPushButton('统计', self)
+        self.Count_Button = QtGui.QPushButton('人员统计', self)
         self.Count_Button.move(200, 200)
         self.Count_Button.clicked.connect(self.Count_Button_Event)
 
         self.Manage_Button = QtGui.QPushButton('系统管理', self)
         self.Manage_Button.move(200, 300)
 
-        self.Query_Button = QtGui.QPushButton('查询', self)
+        self.Query_Button = QtGui.QPushButton('人员查询', self)
         self.Query_Button.move(400, 100)
         self.Query_Button.clicked.connect(self.Query_Button_Event)
 
-        self.Insert_Button = QtGui.QPushButton('录入', self)
+        self.Insert_Button = QtGui.QPushButton('档案录入', self)
         self.Insert_Button.move(400, 200)
         self.Insert_Button.clicked.connect(self.Insert_Button_Event)
 
-        self.furry_Button = QtGui.QPushButton('###', self)
+        self.furry_Button = QtGui.QPushButton('相关表浏览', self)
         self.furry_Button.move(400, 300)
 
         self.setWindowTitle('企业人事档案管理系统')
@@ -115,7 +115,7 @@ class Ctrl_Function(QtGui.QDialog):
         ui.initUI()
         ui.setGeometry(500, 300, 700, 500)
         ui.show()
-        ui.app.exec_()
+        ui.exec_()
         self.show()
 
 

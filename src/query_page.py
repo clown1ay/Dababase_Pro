@@ -99,8 +99,15 @@ class Query_Page(QtGui.QDialog):
                 item = QStandardItem(index_str)
                 self.model.setItem(row, column, item)
 
+    def Clear_Info(self):
+        #  清空表内原有数据
+        for row in range(10):
+            for column in range(31):
+                self.model.setItem(row, column, QStandardItem(''))
+
 
     def xm_Extract_Query(self):
+        # self.Clear_Info(self)
         xm = self.InputEdit.text()
         # 1精确， 2 模糊
         Info_dict = Base_SQL.SQL_Query_xm(xm, '1')
@@ -115,6 +122,7 @@ class Query_Page(QtGui.QDialog):
         self.Set_Info(Info_dict)
 
     def zgbm_Extract_Query(self):
+        self.Clear_Info()
         zgbm = self.InputEdit.text()
         print zgbm
         # 1精确， 2 模糊
