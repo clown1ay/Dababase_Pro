@@ -5,6 +5,7 @@ from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 from PyQt4 import QtGui
 from PyQt4 import QtCore
+import pie_graph
 import Base_init
 import Base_SQL
 import sys
@@ -103,12 +104,29 @@ class Count_Page(QtGui.QDialog):
             for column in range(2):
                 self.model.setItem(row, column, QStandardItem(''))
 
+    def Get_data_paint(self, Info_dict):
+        data_list = []
+        label_list = []
+        total = 0
+        for item in Info_dict['data']:
+            if item[0] == '女':
+                label_list.append('Women')
+            elif item[0] == '男':
+                label_list.append('Men')
+            else:
+                label_list.append(item[0])
+            data_list.append(item[1])
+            total = total + item[1]
+        return label_list, data_list, total
+
     def xb_Button_Event(self):
         self.Clear_Info()
         self.model.setHorizontalHeaderLabels(['性别', '人数'])
         ttype = 'xb'
         Info_dict = Base_SQL.SQL_Count(ttype)
         self.Set_Info(Info_dict, ttype)
+        labels, data_list, total = self.Get_data_paint(Info_dict)
+        pie_graph.pie_paint(labels, data_list, total)
 
     def whcd_Button_Event(self):
         self.Clear_Info()
@@ -116,6 +134,8 @@ class Count_Page(QtGui.QDialog):
         ttype = 'whcd'
         Info_dict = Base_SQL.SQL_Count(ttype)
         self.Set_Info(Info_dict, ttype)
+        labels, data_list, total = self.Get_data_paint(Info_dict)
+        pie_graph.pie_paint(labels, data_list, total)
 
     def bm_Button_Event(self):
         self.Clear_Info()
@@ -123,6 +143,8 @@ class Count_Page(QtGui.QDialog):
         ttype = 'bmbm'
         Info_dict = Base_SQL.SQL_Count(ttype)
         self.Set_Info(Info_dict, ttype)
+        labels, data_list, total = self.Get_data_paint(Info_dict)
+        pie_graph.pie_paint(labels, data_list, total)
 
     def zc_Button_Event(self):
         self.Clear_Info()
@@ -130,6 +152,8 @@ class Count_Page(QtGui.QDialog):
         ttype = 'zcbm'
         Info_dict = Base_SQL.SQL_Count(ttype)
         self.Set_Info(Info_dict, ttype)
+        labels, data_list, total = self.Get_data_paint(Info_dict)
+        pie_graph.pie_paint(labels, data_list, total)
 
 
     def sum_Button_Event(self):
@@ -138,11 +162,6 @@ class Count_Page(QtGui.QDialog):
         ttype = 'sum'
         Info_dict = Base_SQL.SQL_Count(ttype)
         self.Set_Info(Info_dict, ttype)
-
-
-
-
-
 
 
 def main():

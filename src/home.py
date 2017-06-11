@@ -54,6 +54,7 @@ class Home(QtGui.QDialog):
         self.userEdit.move(310, 180)
 
         self.passwordEdit = QtGui.QLineEdit(self)
+        self.passwordEdit.setEchoMode(QLineEdit.Password);
         self.passwordEdit.move(310, 250)
 
         self.quit_Button = QtGui.QPushButton('退出', self)

@@ -8,6 +8,7 @@ from PyQt4 import QtCore
 from scan_page import Scan_Page
 from query_page import Query_Page
 from insert_page import Insert_Page
+from count_page import Count_Page
 
 
   # PyQt4中文显示
@@ -38,6 +39,8 @@ class Ctrl_Function(QtGui.QDialog):
      Scan_function_signal = QtCore.pyqtSignal()
      Query_function_signal = QtCore.pyqtSignal()
      Insert_function_signal = QtCore.pyqtSignal()
+     Count_function_signal = QtCore.pyqtSignal()
+
 
      def __init__(self):
          super(Ctrl_Function, self).__init__()
@@ -52,6 +55,7 @@ class Ctrl_Function(QtGui.QDialog):
 
         self.Count_Button = QtGui.QPushButton('统计', self)
         self.Count_Button.move(200, 200)
+        self.Count_Button.clicked.connect(self.Count_Button_Event)
 
         self.Manage_Button = QtGui.QPushButton('系统管理', self)
         self.Manage_Button.move(200, 300)
@@ -99,10 +103,19 @@ class Ctrl_Function(QtGui.QDialog):
         print '===='
         self.hide()
         ui = Insert_Page()
-        ui.setGeometry(500, 300, 750, 500)
+        ui.setGeometry(500, 300, 750, 620)
         ui.initUI()
         ui.show()
         ui.exec_()
+        self.show()
+
+     def Count_Button_Event(self):
+        self.hide()
+        ui = Count_Page()
+        ui.initUI()
+        ui.setGeometry(500, 300, 700, 500)
+        ui.show()
+        ui.app.exec_()
         self.show()
 
 
