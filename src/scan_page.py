@@ -92,7 +92,7 @@ class Scan_Page(QtGui.QDialog):
         column = self.tableView.currentIndex().column()
         zgbm = self.model.data(self.model.index(row, 0)).toString()
         # 删除功能，在这里获取到ID，从库内删除
-        # Base_SQL.SQL_Del(zgbm)
+        Base_SQL.SQL_Del(zgbm)
         self.model.removeRow(row)
         print '删除成功！'
 

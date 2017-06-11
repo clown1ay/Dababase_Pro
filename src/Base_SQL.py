@@ -101,7 +101,7 @@ def SQL_Query_xm(xm, ttype):
     print return_dict
     return return_dict
 
-
+# 统计功能
 def SQL_Count(index):
     return_dict = {}
     if index == 'xb':
@@ -128,6 +128,7 @@ def SQL_Count(index):
     return return_dict
 
 
+# 删除某条档案记录
 def SQL_Del(zgbm):
     try:
         sqlstr = "DELETE FROM m_dadj WHERE zgbm = %s" %zgbm
@@ -142,6 +143,7 @@ def SQL_Del(zgbm):
         return 0
 
 
+# 修改档案记录
 def SQL_Update(zgbm, column_name, update_content):
     update_content = str(update_content)
     if column_name == 'zcbm':
@@ -160,6 +162,7 @@ def SQL_Update(zgbm, column_name, update_content):
         print str(e.message)
         return 0
 
+# 插入新的档案记录
 def SQL_Insert(xm, xb,mz, csny, hyzk, whcd, jkzk,zzmm,zc,jg,sfzh,byxx,zytc,hkszd,hkxz,xzz,zw,gzm,jspx,jlcf,smwt,tbrqm,tbrq,gsyj,scrq,ryxz,rcsj,ryzt,bz,szbm):
     sqlstr = "INSERT INTO m_dadj(xm, xb,mz,csny,hyzk,whcd, jkzk,zzmm,zcbm,jg,sfzh,byxx,zytc,hkszd,hkxz,xzz,zw,gzm,jspx,jlcf,smwt,tbrqm,tbrq,gsyj,scrq,ryxz,rcsj,ryzt,bz,bmbm) VALUES('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s');"%(xm, xb,mz, csny, hyzk, whcd, jkzk,zzmm,zc,jg,sfzh,byxx,zytc,hkszd,hkxz,xzz,zw,gzm,jspx,jlcf,smwt,tbrqm,tbrq,gsyj,scrq,ryxz,rcsj,ryzt,bz,szbm)
 
@@ -170,6 +173,57 @@ def SQL_Insert(xm, xb,mz, csny, hyzk, whcd, jkzk,zzmm,zc,jg,sfzh,byxx,zytc,hkszd
         return 1
     except:
         return 0
+
+# 查看存在外键的表
+def SQL_Scan_Tables(ttype):
+    return_data = {}
+    if ttype == 'whcd':
+        sqlstr = "SELECT * FROM bm_wh"
+    elif ttype == 'bm':
+        sqlstr = "SELECT * FROM bm_bm"
+    elif ttype == 'zc':
+        sqlstr = "SELECT * FROM bm_zc"
+    count = cur.execute(sqlstr)
+    res = cur.fetchall()
+    return_data['length'] = count
+    return_data['data'] = res
+    return return_data
+
+
+def SQL_Update_Tables(ttype, column_bm, column, update_content):
+    if ttype == 'whcd':
+        if column == 0:
+            sqlstr = "UPDATE bm_wh SET whbm = '%s' WHERE whbm = '%s'" %(update_content, column_bm)
+        else:
+            sqlstr = "UPDATE bm_wh SET whcd = '%s' WHERE whbm = '%s'" %(update_content, column_bm)
+    elif ttype == 'bm':
+        if column == 0:
+            sqlstr = "UPDATE bm_bm SET bmbm = '%s' WHERE bmbm = '%s'" %(update_content, column_bm)
+        else:
+            sqlstr = "UPDATE bm_bm SET bmm = '%s' WHERE bmbm = '%s'" %(update_content, column_bm)
+    elif ttype == 'zc':
+        if column == 0:
+            sqlstr = "UPDATE bm_zc SET zcbm = '%s' WHERE zcbm = '%s'" %(update_content, column_bm)
+        else:
+            sqlstr = "UPDATE bm_zc SET zcmc = '%s' WHERE zcbm = '%s'" %(update_content, column_bm)
+    cur.execute(sqlstr)
+    conn.commit()
+    print '修改成功！ '
+    return 1
+
+
+def SQL_Insert_Tables(ttype, new_bm, new_name):
+    if ttype == 'whcd':
+        sqlstr = "INSERT INTO bm_wh(whbm,whcd) VALUES('%s','%s')" %(new_bm, new_name)
+    elif ttype == 'bm':
+        sqlstr = "INSERT INTO bm_bm(bmbm,bmm) VALUES('%s','%s')" %(new_bm, new_name)
+    elif ttype == 'zc':
+        sqlstr = "INSERT INTO bm_zc(zcbm,zcmc) VALUES('%s','%s')" %(new_bm, new_name)
+    cur.execute(sqlstr)
+    conn.commit()
+    print '插入成功!'
+
+
 
 
 if __name__ == '__main__':
