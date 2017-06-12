@@ -105,7 +105,7 @@ class Ctrl_Function(QtGui.QDialog):
         print '===='
         self.hide()
         ui = Insert_Page()
-        ui.setGeometry(500, 300, 750, 620)
+        ui.setGeometry(500, 300, 750, 800)
         ui.initUI()
         ui.show()
         ui.exec_()

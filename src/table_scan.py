@@ -159,6 +159,7 @@ class Table_scan(QtGui.QDialog):
         column_bm = self.model.data(self.model.index(row, 0)).toString()# 获取row行，0列数据，即该行编码
         print column_bm
         Base_SQL.SQL_Del_Tables(ttype, column_bm)
+        self.model.removeRow(row)
 
 
 

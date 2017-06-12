@@ -101,6 +101,26 @@ def SQL_Query_xm(xm, ttype):
     print return_dict
     return return_dict
 
+
+# 个人档案查询
+def SQL_Person_Query(zgbm):
+    sqlstr = "SELECT * FROM m_dadj WHERE zgbm = %s" %zgbm
+    person_count = cur.execute(sqlstr)
+    if person_count != 0:
+        person_res = cur.fetchone()
+    else:
+        person_res = ()
+    sqlstr = "SELECT Brgx,xm,job FROM cygx WHERE zgbm = %s" %zgbm
+    cygx_count = cur.execute(sqlstr)
+    if cygx_count != 0:
+        cygx_res = cur.fetchall()
+    else:
+        cygx_res = ()
+    print person_res, cygx_res
+    return person_res, cygx_res
+
+
+
 # 统计功能
 def SQL_Count(index):
     return_dict = {}
@@ -135,7 +155,7 @@ def SQL_Del(zgbm):
         print sqlstr
         cur.execute(sqlstr)
         conn.commit()
-        print '----------------------------------'
+        print '删除成功！ '
         return 1
     except Exception, e:
         print str(e.message)
@@ -157,22 +177,32 @@ def SQL_Update(zgbm, column_name, update_content):
         # print sqlstr
         cur.execute(sqlstr)
         conn.commit()
+        print '修改成功！ '
         return 1
     except Exception, e:
         print str(e.message)
         return 0
 
 # 插入新的档案记录
-def SQL_Insert(xm, xb,mz, csny, hyzk, whcd, jkzk,zzmm,zc,jg,sfzh,byxx,zytc,hkszd,hkxz,xzz,zw,gzm,jspx,jlcf,smwt,tbrqm,tbrq,gsyj,scrq,ryxz,rcsj,ryzt,bz,szbm):
-    sqlstr = "INSERT INTO m_dadj(xm, xb,mz,csny,hyzk,whcd, jkzk,zzmm,zcbm,jg,sfzh,byxx,zytc,hkszd,hkxz,xzz,zw,gzm,jspx,jlcf,smwt,tbrqm,tbrq,gsyj,scrq,ryxz,rcsj,ryzt,bz,bmbm) VALUES('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s');"%(xm, xb,mz, csny, hyzk, whcd, jkzk,zzmm,zc,jg,sfzh,byxx,zytc,hkszd,hkxz,xzz,zw,gzm,jspx,jlcf,smwt,tbrqm,tbrq,gsyj,scrq,ryxz,rcsj,ryzt,bz,szbm)
+def SQL_Insert(zgbm, xm, xb,mz, csny, hyzk, whcd, jkzk,zzmm,zc,jg,sfzh,byxx,zytc,hkszd,hkxz,xzz,zw,gzm,jspx,jlcf,smwt,tbrqm,tbrq,gsyj,scrq,ryxz,rcsj,ryzt,bz,szbm):
+    sqlstr = "INSERT INTO m_dadj(zgbm,xm, xb,mz,csny,hyzk,whcd, jkzk,zzmm,zcbm,jg,sfzh,byxx,zytc,hkszd,hkxz,xzz,zw,gzm,jspx,jlcf,smwt,tbrqm,tbrq,gsyj,scrq,ryxz,rcsj,ryzt,bz,bmbm) VALUES('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s');"%(zgbm, xm, xb,mz, csny, hyzk, whcd, jkzk,zzmm,zc,jg,sfzh,byxx,zytc,hkszd,hkxz,xzz,zw,gzm,jspx,jlcf,smwt,tbrqm,tbrq,gsyj,scrq,ryxz,rcsj,ryzt,bz,szbm)
 
     print sqlstr
     try:
         cur.execute(sqlstr)
         conn.commit()
+        print '插入成功！'
         return 1
     except:
         return 0
+
+def SQL_Insert_Realtion(zgbm, relation_list):
+    for record in relation_list:
+        sqlstr = "INSERT INTO cygx(zgbm,Brgx,xm,job) VALUES(%s,'%s','%s','%s')" %(zgbm, record[0], record[1], record[2])
+        cur.execute(sqlstr)
+    conn.commit()
+    print '成员关系插入成功！'
+
 
 # 查看存在外键的表
 def SQL_Scan_Tables(ttype):
@@ -250,7 +280,8 @@ def SQL_Del_Tables(ttype, column_bm):
 
 
 if __name__ == '__main__':
-    SQL_Scan()
+    # SQL_Scan()
     # SQL_Query_zgbm(1, '1')
     # SQL_Query_xm('张', '0')
-    SQL_Count('sum')
+    # SQL_Count('sum')
+    SQL_Person_Query('6')

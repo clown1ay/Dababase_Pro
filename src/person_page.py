@@ -20,13 +20,12 @@ QTextCodec.setCodecForTr(code)
 QTextCodec.setCodecForCStrings(code)
 
 
-# class Home2(QtGui.QWidget):
-class Insert_Page(QtGui.QDialog):
+class Person_Page(QtGui.QDialog):
 
-    Commit_function_signal = QtCore.pyqtSignal()
+    Query_function_signal = QtCore.pyqtSignal()
 
     def __init__(self):
-        super(Insert_Page, self).__init__()
+        super(Person_Page, self).__init__()
         # self.initUI()
 
     def initUI(self):
@@ -68,22 +67,18 @@ class Insert_Page(QtGui.QDialog):
 
         self.whcd = QtGui.QLabel('文化程度 ',self)
         self.whcd.move(30, 280)
-        self.whcdBox = QtGui.QComboBox(self)
-        self.whcdBox.addItems(Base_init.Input_whbm.keys())
-        self.whcdBox.move(110, 280)
+        self.whcdEdit = QtGui.QLineEdit(self)
+        self.whcdEdit.move(110, 280)
 
         self.jkzk = QtGui.QLabel('健康状况 ',self)
         self.jkzk.move(30, 320)
-        self.jkzkBox = QtGui.QComboBox(self)
-        self.jkzkBox.addItems(['良好', '不佳'])
-        self.jkzkBox.move(110, 320)
+        self.jkzkEdit = QtGui.QLineEdit(self)
+        self.jkzkEdit.move(110, 320)
 
         self.zzmm = QtGui.QLabel('政治面貌 ',self)
         self.zzmm.move(30, 360)
-        self.zzmmBox = QtGui.QComboBox(self)
-        self.zzmmBox.addItems(['党员', '团员', '群众'])
-        self.zzmmBox.move(110, 360)
-
+        self.zzmmEdit = QtGui.QLineEdit(self)
+        self.zzmmEdit.move(110, 360)
 
         self.jg = QtGui.QLabel('籍   贯',self)
         self.jg.move(270, 40)
@@ -112,9 +107,8 @@ class Insert_Page(QtGui.QDialog):
 
         self.hkxz = QtGui.QLabel('户口性质',self)
         self.hkxz.move(270, 240)
-        self.hkxzBox = QtGui.QComboBox(self)
-        self.hkxzBox.addItems(['城镇','农村'])
-        self.hkxzBox.move(340, 240)
+        self.hkxzEdit = QtGui.QLineEdit(self)
+        self.hkxzEdit.move(340, 240)
 
         self.xzz = QtGui.QLabel('现住址',self)
         self.xzz.move(270, 280)
@@ -123,16 +117,13 @@ class Insert_Page(QtGui.QDialog):
 
         self.zw = QtGui.QLabel('职务',self)
         self.zw.move(270, 320)
-        self.zwBox = QtGui.QComboBox(self)
-        self.zwBox.addItems(['无','组长', '负责人', '主任'])
-        self.zwBox.move(340, 320)
+        self.zwEdit = QtGui.QLineEdit(self)
+        self.zwEdit.move(340, 320)
 
         self.gzm = QtGui.QLabel('工种名  ',self)
         self.gzm.move(270, 360)
-        self.gzmBox = QtGui.QComboBox(self)
-        self.gzmBox.addItems(['技术人员','行政人员'])
-        self.gzmBox.move(340, 360)
-
+        self.gzmEdit = QtGui.QLineEdit(self)
+        self.gzmEdit.move(340, 360)
 
 
         self.tbrqm = QtGui.QLabel('填表人签名',self)
@@ -157,9 +148,8 @@ class Insert_Page(QtGui.QDialog):
 
         self.ryxz = QtGui.QLabel('人员性质',self)
         self.ryxz.move(510, 200)
-        self.ryxzBox = QtGui.QComboBox(self)
-        self.ryxzBox.addItems(['终生员工','合同员工','临时员工'])
-        self.ryxzBox.move(600, 200)
+        self.ryxzEdit = QtGui.QLineEdit(self)
+        self.ryxzEdit.move(600, 200)
 
         self.rcsj = QtGui.QLabel('入厂时间',self)
         self.rcsj.move(510, 240)
@@ -168,21 +158,18 @@ class Insert_Page(QtGui.QDialog):
 
         self.ryzt = QtGui.QLabel('人员状态',self)
         self.ryzt.move(510, 280)
-        self.ryztBox = QtGui.QComboBox(self)
-        self.ryztBox.addItems(['在岗','出差','休假'])
-        self.ryztBox.move(600, 280)
+        self.ryztEdit = QtGui.QLineEdit(self)
+        self.ryztEdit.move(600, 280)
 
         self.szbm = QtGui.QLabel('所在部门',self)
         self.szbm.move(510, 320)
-        self.szbmBox = QtGui.QComboBox(self)
-        self.szbmBox.addItems(Base_init.Input_bmbm.keys())
-        self.szbmBox.move(600, 320)
+        self.szbmEdit = QtGui.QLineEdit(self)
+        self.szbmEdit.move(600, 320)
 
         self.zc = QtGui.QLabel('职   称',self)
         self.zc.move(510, 360)
-        self.zcBox = QtGui.QComboBox(self)
-        self.zcBox.addItems(Base_init.Input_zcbm.keys())
-        self.zcBox.move(600, 360)
+        self.zcEdit = QtGui.QLineEdit(self)
+        self.zcEdit.move(600, 360)
 
         # self.whcd = QtGui.QComboBox(self)
         # self.whcd.addItems(['hello', 'good'])
@@ -206,10 +193,8 @@ class Insert_Page(QtGui.QDialog):
         self.bzText = QtGui.QTextEdit(self)
         self.bzText.setGeometry(QtCore.QRect(340, 530, 200, 50))
 
-        self.bz = QtGui.QLabel('成员信息录入',self)
+        self.bz = QtGui.QLabel('成员信息',self)
         self.bz.move(30, 600)
-        # self.bzText = QtGui.QTextEdit(self)
-        # self.bzText.setGeometry(QtCore.QRect(340, 530, 200, 50))
 
         self.Mem_1 = QtGui.QLabel('成员一',self)
         self.Mem_1.move(30, 630)
@@ -267,92 +252,131 @@ class Insert_Page(QtGui.QDialog):
         self.Mem_job_Edit_3 = QtGui.QLineEdit(self)
         self.Mem_job_Edit_3.move(510, 730)
 
+        self.Input_tag = QtGui.QLabel('查询编码',self)
+        self.Input_tag.move(600, 430)
+        self.Input_zgbm = QtGui.QLineEdit(self)
+        self.Input_zgbm.move(600, 455)
 
-        self.Commit_Button = QtGui.QPushButton('录入提交', self)
-        self.Commit_Button.move(630, 765)
-        self.Commit_Button.clicked.connect(self.Commit_Button_Event)
 
+        self.Person_Query_Button = QtGui.QPushButton('查看个人档案', self)
+        self.Person_Query_Button.move(600, 555)
+        self.Person_Query_Button.clicked.connect(self.Person_Query_Button_Event)
 
         # setGeometry(起点横坐标, 起点纵坐标, 宽, 高)
         # self.setGeometry(500, 300, 750, 500)
-        self.setWindowTitle('企业人事档案管理系统--信息录入')
+        self.setWindowTitle('企业人事档案管理系统--个人档案查看')
         # self.show()
 
-    def Commit_Button_Event(self):
-        # print self.rcsjEdit.text()
-        # print self.bzText.toPlainText()#  获取文本框内容
-        # print self.zcBox.currentText()
-        zgbm = self.zgbmEdit.text()
-        xm = self.xmEdit.text()
-        xb = self.xbEdit.text()
-        mz = self.mzEdit.text()
-        csny = self.csnyEdit.text()
-        hyzk = self.hyzkEdit.text()
-        whcd = self.whcdBox.currentText()
-        whcd = Base_init.Input_whbm[str(whcd)]
-        # print whcd
-        jkzk = self.jkzkBox.currentText()
-        zzmm = self.zzmmBox.currentText()
-        jg = self.jgEdit.text()
-        sfzh = self.sfzhEdit.text()
-        byxx = self.byxxEdit.text()
-        zytc = self.zytcEdit.text()
-        hkszd = self.hkszdEdit.text()
-        hkxz = self.hkxzBox.currentText()
-        xzz = self.xzzEdit.text()
-        zw = self.zwBox.currentText()
-        gzm = self.gzmBox.currentText()
-        tbrqm = self.tbrqmEdit.text()
-        tbrq = self.tbrqEdit.text()
-        gsyj = self.gsyjEdit.text()
-        scrq = self.scrqEdit.text()
-        ryxz = self.ryxzBox.currentText()
-        rcsj = self.rcsjEdit.text()
-        ryzt = self.ryztBox.currentText()
-        szbm = self.szbmBox.currentText()
-        szbm = Base_init.Input_bmbm[str(szbm)]
-        # print szbm
-        zc = self.zcBox.currentText()
-        zc = Base_init.Input_zcbm[str(zc)]
-        # print zc
-        jspx = self.jspxText.toPlainText()
-        jlcf = self.jlcfText.toPlainText()
-        smwt = self.smwtText.toPlainText()
-        bz = self.bzText.toPlainText()
-        # print xm, xb,mz, csny, hyzk, whcd, jkzk,zzmm,jg,sfzh,byxx,zytc,hkszd,
-        # hkxz,xzz,zw,gzm,jspx,jlcf,smwt,tbrqm,tbrq,gsyj,scrq,ryxz,rcsj,ryzt,bz,szbm
-        print '---'
-        resp = Base_SQL.SQL_Insert(zgbm, xm, xb,mz, csny, hyzk, whcd, jkzk,zzmm,zc,jg,sfzh,byxx,zytc,hkszd,hkxz,xzz,zw,gzm,jspx,jlcf,smwt,tbrqm,tbrq,gsyj,scrq,ryxz,rcsj,ryzt,bz,szbm)
+    def Set_Info(self, person_res, cygx_res):
+        self.zgbmEdit.setText(str(person_res[0]))
+        self.xmEdit.setText(str(person_res[1]))
+        self.xbEdit.setText(str(person_res[2]))
+        self.mzEdit.setText(str(person_res[3]))
+        self.csnyEdit.setText(str(person_res[4]))
+        self.hyzkEdit.setText(str(person_res[5]))
+        whcd = Base_init.Read_whbm[str(person_res[6])]
+        self.whcdEdit.setText(whcd)
+        self.jkzkEdit.setText(str(person_res[7]))
+        self.zzmmEdit.setText(str(person_res[8]))
+        zc = Base_init.Read_zcbm[str(person_res[9])]
+        self.zcEdit.setText(zc)
+        self.jgEdit.setText(str(person_res[10]))
+        self.sfzhEdit.setText(str(person_res[11]))
+        self.byxxEdit.setText(str(person_res[12]))
+        self.zytcEdit.setText(str(person_res[13]))
+        self.hkszdEdit.setText(str(person_res[14]))
+        self.hkxzEdit.setText(str(person_res[15]))
+        self.xzzEdit.setText(str(person_res[16]))
+        self.zwEdit.setText(str(person_res[17]))
+        self.gzmEdit.setText(str(person_res[18]))
+        self.jspxText.setText(str(person_res[19]))
+        self.jlcfText.setText(str(person_res[20]))
+        self.smwtText.setText(str(person_res[21]))
+        self.tbrqmEdit.setText(str(person_res[22]))
+        self.tbrqEdit.setText(str(person_res[22]))
+        self.tbrqEdit.setText(str(person_res[23]))
+        self.gsyjEdit.setText(str(person_res[24]))
+        self.scrqEdit.setText(str(person_res[25]))
+        self.ryxzEdit.setText(str(person_res[26]))
+        self.rcsjEdit.setText(str(person_res[27]))
+        self.ryztEdit.setText(str(person_res[28]))
+        self.bzText.setText(str(person_res[29]))
+        szbm = Base_init.Read_bmbm[str(person_res[30])]
+        self.szbmEdit.setText(szbm)
 
-        relation_list = []
-        if self.Mem_relation_Edit_1.text() != '':
-            Mem_relation_1 = self.Mem_relation_Edit_1.text()
-            Mem_xm_1 = self.Mem_xm_Edit_1.text()
-            Mem_job_1 = self.Mem_job_Edit_1.text()
-            relation_list.append([Mem_relation_1, Mem_xm_1, Mem_job_1])
+        if cygx_res == ():
+            self.Mem_relation_Edit_1.setText('')
+            self.Mem_xm_Edit_1.setText('')
+            self.Mem_job_Edit_1.setText('')
+            self.Mem_relation_Edit_2.setText('')
+            self.Mem_xm_Edit_2.setText('')
+            self.Mem_job_Edit_2.setText('')
+            self.Mem_relation_Edit_3.setText('')
+            self.Mem_xm_Edit_3.setText('')
+            self.Mem_job_Edit_3.setText('')
+        elif len(cygx_res) == 1:
+            self.Mem_relation_Edit_1.setText(str(cygx_res[0][0]))
+            self.Mem_xm_Edit_1.setText(str(cygx_res[0][1]))
+            self.Mem_job_Edit_1.setText(str(cygx_res[0][2]))
+            self.Mem_relation_Edit_2.setText('')
+            self.Mem_xm_Edit_2.setText('')
+            self.Mem_job_Edit_2.setText('')
+            self.Mem_relation_Edit_3.setText('')
+            self.Mem_xm_Edit_3.setText('')
+            self.Mem_job_Edit_3.setText('')
+        elif len(cygx_res) == 2:
+            self.Mem_relation_Edit_1.setText(str(cygx_res[0][0]))
+            self.Mem_xm_Edit_1.setText(str(cygx_res[0][1]))
+            self.Mem_job_Edit_1.setText(str(cygx_res[0][2]))
+            self.Mem_relation_Edit_2.setText(str(cygx_res[1][0]))
+            self.Mem_xm_Edit_2.setText(str(cygx_res[1][1]))
+            self.Mem_job_Edit_2.setText(str(cygx_res[1][2]))
+            self.Mem_relation_Edit_3.setText('')
+            self.Mem_xm_Edit_3.setText('')
+            self.Mem_job_Edit_3.setText('')
+        else:
+            self.Mem_relation_Edit_1.setText(str(cygx_res[0][0]))
+            self.Mem_xm_Edit_1.setText(str(cygx_res[0][1]))
+            self.Mem_job_Edit_1.setText(str(cygx_res[0][2]))
+            self.Mem_relation_Edit_2.setText(str(cygx_res[1][0]))
+            self.Mem_xm_Edit_2.setText(str(cygx_res[1][1]))
+            self.Mem_job_Edit_2.setText(str(cygx_res[1][2]))
+            self.Mem_relation_Edit_3.setText(str(cygx_res[2][0]))
+            self.Mem_xm_Edit_3.setText(str(cygx_res[2][1]))
+            self.Mem_job_Edit_3.setText(str(cygx_res[2][2]))
 
-        if self.Mem_relation_Edit_2.text() != '':
-            Mem_relation_2 = self.Mem_relation_Edit_2.text()
-            Mem_xm_2 = self.Mem_xm_Edit_2.text()
-            Mem_job_2 = self.Mem_job_Edit_2.text()
-            relation_list.append([Mem_relation_2, Mem_xm_2, Mem_job_2])
 
-        if self.Mem_relation_Edit_3.text() != '':
-            Mem_relation_3 = self.Mem_relation_Edit_3.text()
-            Mem_xm_3 = self.Mem_xm_Edit_3.text()
-            Mem_job_3 = self.Mem_job_Edit_3.text()
-            relation_list.append([Mem_relation_3, Mem_xm_3, Mem_job_3])
-
-        if relation_list != []:
-            Base_SQL.SQL_Insert_Realtion(zgbm, relation_list)
+        if cygx_res != ():
+            self.Mem_relation_Edit_3.setText()
+            self.Mem_xm_Edit_3.setText()
+            self.Mem_job_Edit_3.setText()
 
 
+
+
+
+
+
+
+
+
+
+
+
+    def Person_Query_Button_Event(self):
+        zgbm = self.Input_zgbm.text()
+        person_res, cygx_res = Base_SQL.SQL_Person_Query(zgbm)
+        if person_res == ():
+            # 出弹框，查询为空
+            return
+        else:
+            self.Set_Info(person_res, cygx_res)
 
 
 
 def main():
     app = QtGui.QApplication(sys.argv)
-    ex = Insert_Page()
+    ex = Person_Page()
     ex.initUI()
     ex.setGeometry(500, 300, 750, 800)
     ex.show()
