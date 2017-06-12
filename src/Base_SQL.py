@@ -212,6 +212,7 @@ def SQL_Update_Tables(ttype, column_bm, column, update_content):
     return 1
 
 
+# 编码表信息插入
 def SQL_Insert_Tables(ttype, new_bm, new_name):
     if ttype == 'whcd':
         sqlstr = "INSERT INTO bm_wh(whbm,whcd) VALUES('%s','%s')" %(new_bm, new_name)
@@ -219,9 +220,31 @@ def SQL_Insert_Tables(ttype, new_bm, new_name):
         sqlstr = "INSERT INTO bm_bm(bmbm,bmm) VALUES('%s','%s')" %(new_bm, new_name)
     elif ttype == 'zc':
         sqlstr = "INSERT INTO bm_zc(zcbm,zcmc) VALUES('%s','%s')" %(new_bm, new_name)
-    cur.execute(sqlstr)
-    conn.commit()
-    print '插入成功!'
+    try:
+        cur.execute(sqlstr)
+        conn.commit()
+        print '插入成功!'
+    except Exception, e:
+        print e
+        return 0
+
+
+# 编码表记录删除
+def SQL_Del_Tables(ttype, column_bm):
+    if ttype == 'whcd':
+        sqlstr = "DELETE FROM  bm_wh WHERE whbm = '%s'" %column_bm
+    elif ttype == 'bm':
+        sqlstr = "DELETE FROM bm_bm WHERE bmbm = '%s'" %column_bm
+    elif ttype == 'zc':
+        sqlstr = "DELETE FROM bm_zc WHERE zcbm = '%s'" %column_bm
+    try:
+        cur.execute(sqlstr)
+        conn.commit()
+        print '删除成功！ '
+        return 1
+    except Exception, e:
+        print e
+        return 0
 
 
 

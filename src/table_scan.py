@@ -61,7 +61,7 @@ class Table_scan(QtGui.QDialog):
 
         self.del_Button = QtGui.QPushButton('删除', self)
         self.del_Button.move(100, 210)
-        # self.bm_Button.clicked.connect(self.bm_Button_Event)
+        self.del_Button.clicked.connect(self.del_Button_Event)
 
         self.update_Button = QtGui.QPushButton('修改', self)
         self.update_Button.move(100, 280)
@@ -106,6 +106,7 @@ class Table_scan(QtGui.QDialog):
                 item = QStandardItem(str(index_str))
                 self.model.setItem(row, column, item)
 
+    # 表名转译
     def Type_trans(self, table_type):
         if table_type == '文化程度表':
             ttype = 'whcd'
@@ -115,6 +116,7 @@ class Table_scan(QtGui.QDialog):
             ttype = 'zc'
         return ttype
 
+    # 查看表信息
     def scan_Button_Event(self):
         table_type = str(self.chooseBox.currentText())
         print table_type
@@ -130,7 +132,7 @@ class Table_scan(QtGui.QDialog):
         Info_dict = Base_SQL.SQL_Scan_Tables(ttype)
         self.Set_Info(Info_dict)
 
-
+        # 更改内容
     def update_Button_Event(self):
         table_type = str(self.chooseBox.currentText())
         ttype = self.Type_trans(table_type)# 得到表类型
@@ -142,6 +144,7 @@ class Table_scan(QtGui.QDialog):
         Qupdate_content = QStandardItem(update_content)
         self.model.setItem(row, column, Qupdate_content)
 
+        # 插入新的信息
     def insert_Button_Event(self):
         table_type = str(self.chooseBox.currentText())
         ttype = self.Type_trans(table_type)# 得到表类型
@@ -149,6 +152,13 @@ class Table_scan(QtGui.QDialog):
         new_name = self.new_nameEdit.text()
         Base_SQL.SQL_Insert_Tables(ttype, new_bm, new_name)
 
+    def del_Button_Event(self):
+        table_type = str(self.chooseBox.currentText())
+        ttype = self.Type_trans(table_type)# 得到表类型
+        row = self.tableView.currentIndex().row()
+        column_bm = self.model.data(self.model.index(row, 0)).toString()# 获取row行，0列数据，即该行编码
+        print column_bm
+        Base_SQL.SQL_Del_Tables(ttype, column_bm)
 
 
 

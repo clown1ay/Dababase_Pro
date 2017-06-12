@@ -9,6 +9,7 @@ from scan_page import Scan_Page
 from query_page import Query_Page
 from insert_page import Insert_Page
 from count_page import Count_Page
+from table_scan import Table_scan
 
 
   # PyQt4中文显示
@@ -68,8 +69,9 @@ class Ctrl_Function(QtGui.QDialog):
         self.Insert_Button.move(400, 200)
         self.Insert_Button.clicked.connect(self.Insert_Button_Event)
 
-        self.furry_Button = QtGui.QPushButton('相关表浏览', self)
-        self.furry_Button.move(400, 300)
+        self.Scan_Table_Button = QtGui.QPushButton('相关表浏览', self)
+        self.Scan_Table_Button.move(400, 300)
+        self.Scan_Table_Button.clicked.connect(self.Scan_Table_Button_Event)
 
         self.setWindowTitle('企业人事档案管理系统')
 
@@ -112,6 +114,15 @@ class Ctrl_Function(QtGui.QDialog):
      def Count_Button_Event(self):
         self.hide()
         ui = Count_Page()
+        ui.initUI()
+        ui.setGeometry(500, 300, 700, 500)
+        ui.show()
+        ui.exec_()
+        self.show()
+
+     def Scan_Table_Button_Event(self):
+        self.hide()
+        ui = Table_scan()
         ui.initUI()
         ui.setGeometry(500, 300, 700, 500)
         ui.show()
