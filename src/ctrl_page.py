@@ -10,6 +10,8 @@ from query_page import Query_Page
 from insert_page import Insert_Page
 from count_page import Count_Page
 from table_scan import Table_scan
+from person_page import Person_Page
+from sys_page import Sys_Page
 
 
   # PyQt4中文显示
@@ -20,20 +22,6 @@ QTextCodec.setCodecForTr(code)
 QTextCodec.setCodecForCStrings(code)
 
 
-try:
-    _fromUtf8 = QtCore.QString.fromUtf8
-except AttributeError:
-    def _fromUtf8(s):
-        return s
-
-try:
-    _encoding = QtGui.QApplication.UnicodeUTF8
-    def _translate(context, text, disambig):
-        return QtGui.QApplication.translate(context, text, disambig, _encoding)
-except AttributeError:
-    def _translate(context, text, disambig):
-        return QtGui.QApplication.translate(context, text, disambig)
-
 # 功能控制页
 class Ctrl_Function(QtGui.QDialog):
 
@@ -41,6 +29,9 @@ class Ctrl_Function(QtGui.QDialog):
      Query_function_signal = QtCore.pyqtSignal()
      Insert_function_signal = QtCore.pyqtSignal()
      Count_function_signal = QtCore.pyqtSignal()
+     Person_function_signal = QtCore.pyqtSignal()
+     Manage_function_signal = QtCore.pyqtSignal()
+     Quit_function_signal = QtCore.pyqtSignal()
 
 
      def __init__(self):
@@ -58,8 +49,9 @@ class Ctrl_Function(QtGui.QDialog):
         self.Count_Button.move(200, 200)
         self.Count_Button.clicked.connect(self.Count_Button_Event)
 
-        self.Manage_Button = QtGui.QPushButton('系统管理', self)
-        self.Manage_Button.move(200, 300)
+        self.Person_Page_Button = QtGui.QPushButton('个人报表', self)
+        self.Person_Page_Button.move(200, 300)
+        self.Person_Page_Button.clicked.connect(self.Person_Page_Button_Event)
 
         self.Query_Button = QtGui.QPushButton('人员查询', self)
         self.Query_Button.move(400, 100)
@@ -72,6 +64,14 @@ class Ctrl_Function(QtGui.QDialog):
         self.Scan_Table_Button = QtGui.QPushButton('相关表浏览', self)
         self.Scan_Table_Button.move(400, 300)
         self.Scan_Table_Button.clicked.connect(self.Scan_Table_Button_Event)
+
+        self.Manage_Button = QtGui.QPushButton('系统管理', self)
+        self.Manage_Button.move(200, 400)
+        self.Manage_Button.clicked.connect(self.Manage_Button_Event)
+
+        self.Quit_Button = QtGui.QPushButton('退出', self)
+        self.Quit_Button.move(400, 400)
+        self.Quit_Button.clicked.connect(QtCore.QCoreApplication.instance().quit)
 
         self.setWindowTitle('企业人事档案管理系统')
 
@@ -123,6 +123,24 @@ class Ctrl_Function(QtGui.QDialog):
      def Scan_Table_Button_Event(self):
         self.hide()
         ui = Table_scan()
+        ui.initUI()
+        ui.setGeometry(500, 300, 700, 500)
+        ui.show()
+        ui.exec_()
+        self.show()
+
+     def Person_Page_Button_Event(self):
+        self.hide()
+        ui = Person_Page()
+        ui.initUI()
+        ui.setGeometry(500, 300, 750, 800)
+        ui.show()
+        ui.exec_()
+        self.show()
+
+     def Manage_Button_Event(self):
+        self.hide()
+        ui = Sys_Page()
         ui.initUI()
         ui.setGeometry(500, 300, 700, 500)
         ui.show()

@@ -11,8 +11,8 @@ dict_Map = {}
 for i in range(len(column_name)):
     dict_Map[column_name[i]] = SQL_column_name[i]
 
-conn=MySQLdb.connect(host='localhost',user='root',passwd='1234',port=3306,charset = 'utf8')
-cur=conn.cursor()
+con=MySQLdb.connect(host='localhost',user='root',passwd='1234',port=3306,charset = 'utf8')
+cur=con.cursor()
 cur.execute("use HR_Manage")
 
 def bmbm_Trans():
@@ -53,6 +53,7 @@ def zcbm_Trans():
 Read_bmbm, Input_bmbm = bmbm_Trans()
 Read_whbm, Input_whbm = whbm_Trans()
 Read_zcbm, Input_zcbm = zcbm_Trans()
+con.close()
 
 
 # 汉字名称转化为字段名

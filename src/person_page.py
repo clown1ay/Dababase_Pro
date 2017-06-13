@@ -259,8 +259,12 @@ class Person_Page(QtGui.QDialog):
 
 
         self.Person_Query_Button = QtGui.QPushButton('查看个人档案', self)
-        self.Person_Query_Button.move(600, 555)
+        self.Person_Query_Button.move(600, 500)
         self.Person_Query_Button.clicked.connect(self.Person_Query_Button_Event)
+
+        self.Reset_Button = QtGui.QPushButton('重置更新', self)
+        self.Reset_Button.move(600, 550)
+        self.Reset_Button.clicked.connect(self.Reset_Button_Event)
 
         # setGeometry(起点横坐标, 起点纵坐标, 宽, 高)
         # self.setGeometry(500, 300, 750, 500)
@@ -345,26 +349,19 @@ class Person_Page(QtGui.QDialog):
             self.Mem_xm_Edit_3.setText(str(cygx_res[2][1]))
             self.Mem_job_Edit_3.setText(str(cygx_res[2][2]))
 
-
-        if cygx_res != ():
-            self.Mem_relation_Edit_3.setText()
-            self.Mem_xm_Edit_3.setText()
-            self.Mem_job_Edit_3.setText()
-
-
-
-
-
-
-
-
-
-
-
-
-
+    # 本页面
     def Person_Query_Button_Event(self):
         zgbm = self.Input_zgbm.text()
+        person_res, cygx_res = Base_SQL.SQL_Person_Query(zgbm)
+        if person_res == ():
+            response = QtGui.QMessageBox.information(self, 'Message',"不存在此人！", QtGui.QMessageBox.Yes)
+            # return
+        else:
+            self.Set_Info(person_res, cygx_res)
+
+    # 非主页的其他页面调用
+    def Out_Query_Button_Event(self, zgbm):
+        # zgbm = self.Input_zgbm.text()
         person_res, cygx_res = Base_SQL.SQL_Person_Query(zgbm)
         if person_res == ():
             # 出弹框，查询为空
@@ -372,6 +369,78 @@ class Person_Page(QtGui.QDialog):
         else:
             self.Set_Info(person_res, cygx_res)
 
+
+    def Reset_Button_Event(self):
+        zgbm = self.zgbmEdit.text()
+        xm = self.xmEdit.text()
+        xb = self.xbEdit.text()
+        mz = self.mzEdit.text()
+        csny = self.csnyEdit.text()
+        hyzk = self.hyzkEdit.text()
+        whcd = self.whcdEdit.text()
+        whcd = Base_init.Input_whbm[str(whcd)]
+        # print whcd
+        jkzk = self.jkzkEdit.text()
+        zzmm = self.zzmmEdit.text()
+        jg = self.jgEdit.text()
+        sfzh = self.sfzhEdit.text()
+        byxx = self.byxxEdit.text()
+        zytc = self.zytcEdit.text()
+        hkszd = self.hkszdEdit.text()
+        hkxz = self.hkxzEdit.text()
+        xzz = self.xzzEdit.text()
+        zw = self.zwEdit.text()
+        gzm = self.gzmEdit.text()
+        tbrqm = self.tbrqmEdit.text()
+        tbrq = self.tbrqEdit.text()
+        gsyj = self.gsyjEdit.text()
+        scrq = self.scrqEdit.text()
+        ryxz = self.ryxzEdit.text()
+        rcsj = self.rcsjEdit.text()
+        ryzt = self.ryztEdit.text()
+        szbm = self.szbmEdit.text()
+        szbm = Base_init.Input_bmbm[str(szbm)]
+        # print szbm
+        zc = self.zcEdit.text()
+        zc = Base_init.Input_zcbm[str(zc)]
+        # print zc
+        jspx = self.jspxText.toPlainText()
+        jlcf = self.jlcfText.toPlainText()
+        smwt = self.smwtText.toPlainText()
+        bz = self.bzText.toPlainText()
+        # print xm, xb,mz, csny, hyzk, whcd, jkzk,zzmm,jg,sfzh,byxx,zytc,hkszd,
+        # hkxz,xzz,zw,gzm,jspx,jlcf,smwt,tbrqm,tbrq,gsyj,scrq,ryxz,rcsj,ryzt,bz,szbm
+        resp = Base_SQL.SQL_Replace(zgbm, xm, xb,mz, csny, hyzk, whcd, jkzk,zzmm,zc,jg,sfzh,byxx,zytc,hkszd,hkxz,xzz,zw,gzm,jspx,jlcf,smwt,tbrqm,tbrq,gsyj,scrq,ryxz,rcsj,ryzt,bz,szbm)
+        # if resp == True:
+            # response = QtGui.QMessageBox.information(self, 'Message',"重置成功！ ", QtGui.QMessageBox.Yes)
+        relation_list = []
+        if self.Mem_relation_Edit_1.text() != '':
+            Mem_relation_1 = self.Mem_relation_Edit_1.text()
+            Mem_xm_1 = self.Mem_xm_Edit_1.text()
+            Mem_job_1 = self.Mem_job_Edit_1.text()
+            relation_list.append([Mem_relation_1, Mem_xm_1, Mem_job_1])
+
+        if self.Mem_relation_Edit_2.text() != '':
+            Mem_relation_2 = self.Mem_relation_Edit_2.text()
+            Mem_xm_2 = self.Mem_xm_Edit_2.text()
+            Mem_job_2 = self.Mem_job_Edit_2.text()
+            relation_list.append([Mem_relation_2, Mem_xm_2, Mem_job_2])
+
+        if self.Mem_relation_Edit_3.text() != '':
+            Mem_relation_3 = self.Mem_relation_Edit_3.text()
+            Mem_xm_3 = self.Mem_xm_Edit_3.text()
+            Mem_job_3 = self.Mem_job_Edit_3.text()
+            relation_list.append([Mem_relation_3, Mem_xm_3, Mem_job_3])
+
+        if relation_list != []:
+            resp_2 = Base_SQL.SQL_Replace_Relation(zgbm, relation_list)
+        else:
+            resp_2 = True
+
+        if resp_2 == True and resp == True:
+            response = QtGui.QMessageBox.information(self, 'Message',"更新重置成功！", QtGui.QMessageBox.Yes)
+        else:
+            response = QtGui.QMessageBox.information(self, 'Message',"更新重置失败！", QtGui.QMessageBox.Yes)
 
 
 def main():

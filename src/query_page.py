@@ -5,6 +5,7 @@ from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 from PyQt4 import QtGui
 from PyQt4 import QtCore
+from person_page import Person_Page
 import Base_SQL
 import Base_init
 import sys
@@ -29,6 +30,7 @@ class Query_Page(QtGui.QDialog):
     xb_flurry_function_signal = QtCore.pyqtSignal()
     xb_Extract_function_signal = QtCore.pyqtSignal()
     xm_flurry_function_signal = QtCore.pyqtSignal()
+    Person_function_signal = QtCore.pyqtSignal()
 
     def __init__(self, arg=None):
         super(Query_Page, self).__init__(arg)
@@ -64,18 +66,21 @@ class Query_Page(QtGui.QDialog):
         self.Del_Button.clicked.connect(self.Del_Button_Event)
 
         self.Update_Button = QtGui.QPushButton('Update', self)
-        self.Update_Button.move(220, 390)
+        self.Update_Button.move(210, 390)
         self.Update_Button.clicked.connect(self.Update_Button_Event)
 
         self.user = QtGui.QLabel('请输入：', self)
-        self.user.move(390, 390)
+        self.user.move(320, 390)
 
         self.InputEdit = QtGui.QLineEdit(self)
-        self.InputEdit.move(450, 390)
+        self.InputEdit.move(380, 390)
 
         self.Info = QtGui.QLabel('注：1.文化程度：本科、大专、硕士、博士、博士后;\n2.职称：处长、局长、科长、科员、实习;\n3.部门:培训部、外联部、项目部、人事部、财务部',self)
         self.Info.move(100, 480)
 
+        self.Person_Button = QtGui.QPushButton('个人报表', self)
+        self.Person_Button.move(520, 390)
+        self.Person_Button.clicked.connect(self.Person_Button_Event)
 
         # self.setGeometry(500, 300, 700, 500)
         self.setWindowTitle('企业人事档案信息浏览')
@@ -107,19 +112,25 @@ class Query_Page(QtGui.QDialog):
 
 
     def xm_Extract_Query(self):
-        # self.Clear_Info(self)
+        self.Clear_Info()
         xm = self.InputEdit.text()
         # 1精确， 2 模糊
         Info_dict = Base_SQL.SQL_Query_xm(xm, '1')
-        self.Set_Info(Info_dict)
+        if Info_dict['length'] == 0:
+            response = QtGui.QMessageBox.information(self, 'Message',"查不到相关信息！", QtGui.QMessageBox.Yes)
+        else:
+            self.Set_Info(Info_dict)
 
 
     def xm_Flurry_Query(self):
+        self.Clear_Info()
         xm = self.InputEdit.text()
-        # print xm
         # 1精确， 2 模糊
         Info_dict = Base_SQL.SQL_Query_xm(xm, '2')
-        self.Set_Info(Info_dict)
+        if Info_dict['length'] == 0:
+            response = QtGui.QMessageBox.information(self, 'Message',"查不到相关信息！", QtGui.QMessageBox.Yes)
+        else:
+            self.Set_Info(Info_dict)
 
     def zgbm_Extract_Query(self):
         self.Clear_Info()
@@ -127,26 +138,34 @@ class Query_Page(QtGui.QDialog):
         print zgbm
         # 1精确， 2 模糊
         Info_dict = Base_SQL.SQL_Query_zgbm(zgbm, '1')
-        self.Set_Info(Info_dict)
+        if Info_dict['length'] == 0:
+            response = QtGui.QMessageBox.information(self, 'Message',"查不到相关信息！", QtGui.QMessageBox.Yes)
+        else:
+            self.Set_Info(Info_dict)
 
     def zgbm_Flurry_Query(self):
+        self.Clear_Info()
         zgbm = self.InputEdit.text()
         print zgbm
         # 1精确， 2 模糊
         Info_dict = Base_SQL.SQL_Query_zgbm(zgbm, '2')
-        self.Set_Info(Info_dict)
+        if Info_dict['length'] == 0:
+            response = QtGui.QMessageBox.information(self, 'Message',"查不到相关信息！", QtGui.QMessageBox.Yes)
+        else:
+            self.Set_Info(Info_dict)
 
 
     def Del_Button_Event(self):
         row = self.tableView.currentIndex().row()
         column = self.tableView.currentIndex().column()
         zgbm = self.model.data(self.model.index(row, 0)).toString()
-        print zgbm
-        print row
         # 删除功能，在这里获取到ID，从库内删除
-        Base_SQL.SQL_Del(zgbm)
-        self.model.removeRow(row)
-        print '删除成功！'
+        delete = Base_SQL.SQL_Del(zgbm)
+        if delete == True:
+            response = QtGui.QMessageBox.information(self, 'Message',"删除成功！", QtGui.QMessageBox.Yes)
+            self.model.removeRow(row)
+        else:
+            response = QtGui.QMessageBox.information(self, 'Message',"删除失败！", QtGui.QMessageBox.Yes)
 
 
     def Update_Button_Event(self):
@@ -163,8 +182,23 @@ class Query_Page(QtGui.QDialog):
         self.model.setItem(row, column, Qupdate_content)
         # 根据zgbm, updaet_content 和 column_name 转意后字段名称，修改数据库
         Base_SQL.SQL_Update(zgbm, column_name, update_content)
-        # print update_content
-        print '修改成功！ '
+        if update == True:
+            response = QtGui.QMessageBox.information(self, 'Message',"修改成功！", QtGui.QMessageBox.Yes)
+        else:
+            response = QtGui.QMessageBox.information(self, 'Message',"修改失败！", QtGui.QMessageBox.Yes)
+
+
+    def Person_Button_Event(self):
+        row = self.tableView.currentIndex().row()
+        zgbm = self.model.data(self.model.index(row, 0)).toString()
+        self.hide()
+        ex = Person_Page()
+        ex.initUI()
+        ex.Out_Query_Button_Event(zgbm)
+        ex.setGeometry(500, 300, 750, 800)
+        ex.show()
+        ex.exec_()
+        self.show()
 
 
 

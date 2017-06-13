@@ -2,22 +2,23 @@
 '''
     基本的SQL语句模块
 '''
-# import MySQLdb
-import pymysql
+import MySQLdb
+# import pymysql
 import time
 import Base_init
+import os
 import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
-
+print '1'
 # 获取系统时间 time.strftime('%Y-%m-%d-%H:%M',time.localtime(time.time()))
 
-# conn=MySQLdb.connect(host='localhost',user='root',passwd='1234',port=3306,charset = 'utf8')
-# cur=conn.cursor()
+conn=MySQLdb.connect(host='localhost',user='root',passwd='1234',port=3306,charset = 'utf8')
+cur=conn.cursor()
 # cur.execute("use HR_Manage")
 
-conn =pymysql.connect(host='127.0.0.1', user='root', passwd='1234', charset='utf8')
-cur = conn.cursor()
+# conn =pymysql.connect(host='127.0.0.1', user='root', passwd='1234', charset='utf8')
+ #cur = conn.cursor()
 
 cur.execute("use information_schema")
 cur.execute("select COLUMN_NAME from COLUMNS where TABLE_NAME = 'm_dadj';")
@@ -61,14 +62,6 @@ def SQL_Query_zgbm(zgbm, ttype):
         print sqlstr
     count = cur.execute(sqlstr)
     res = cur.fetchall()
-    '''
-    for item in res:
-        for i in range(1, len(item)):
-            single_dict[str(m_dadj_column_names[i][0])] = i
-        zgbm = "%03d"%int(item[0])
-        data_dict[zgbm] = single_dict
-        single_dict = {}
-    '''
     return_dict['length'] = int(count)
     return_dict['data'] = res
     print return_dict
@@ -88,14 +81,6 @@ def SQL_Query_xm(xm, ttype):
     print sqlstr
     count = cur.execute(sqlstr)
     res = cur.fetchall()
-    '''
-    for item in res:
-        for i in range(1, len(item)):
-            single_dict[str(m_dadj_column_names[i][0])] = i
-        zgbm = "%03d"%int(item[0])
-        data_dict[zgbm] = single_dict
-        single_dict = {}
-    '''
     return_dict['length'] = int(count)
     return_dict['data'] = res
     print return_dict
@@ -116,8 +101,41 @@ def SQL_Person_Query(zgbm):
         cygx_res = cur.fetchall()
     else:
         cygx_res = ()
-    print person_res, cygx_res
+    # print person_res, cygx_res
     return person_res, cygx_res
+
+
+# 登录验证
+def SQL_Login(user, password):
+    sqlstr = "SELECT * FROM admin_table WHERE user = '%s' AND password = '%s'" %(user, password)
+    count = cur.execute(sqlstr)
+    print count
+    if count != 0:
+        return True
+    else:
+        return False
+
+#  旧密码重置
+def SQL_verify(password):
+    sqlstr = "SELECT * FROM admin_table WHERE user = 'admin' AND password = '%s'" %password
+    count = cur.execute(sqlstr)
+    print cur.fetchall()
+    if count != 0:
+        return True
+    else:
+        return False
+
+
+# 密码重置
+def SQL_Reset(new_password):
+    try:
+        sqlstr = "UPDATE admin_table SET password = '%s' WHERE user = 'admin'" %new_password
+        cur.execute(sqlstr)
+        conn.commit()
+        return True
+    except Exception, e:
+        print e
+        return False
 
 
 
@@ -156,11 +174,10 @@ def SQL_Del(zgbm):
         cur.execute(sqlstr)
         conn.commit()
         print '删除成功！ '
-        return 1
+        return True
     except Exception, e:
-        print str(e.message)
-        print '-------------------------------'
-        return 0
+        print e
+        return False
 
 
 # 修改档案记录
@@ -178,10 +195,10 @@ def SQL_Update(zgbm, column_name, update_content):
         cur.execute(sqlstr)
         conn.commit()
         print '修改成功！ '
-        return 1
+        return True
     except Exception, e:
-        print str(e.message)
-        return 0
+        print e
+        return False
 
 # 插入新的档案记录
 def SQL_Insert(zgbm, xm, xb,mz, csny, hyzk, whcd, jkzk,zzmm,zc,jg,sfzh,byxx,zytc,hkszd,hkxz,xzz,zw,gzm,jspx,jlcf,smwt,tbrqm,tbrq,gsyj,scrq,ryxz,rcsj,ryzt,bz,szbm):
@@ -192,16 +209,54 @@ def SQL_Insert(zgbm, xm, xb,mz, csny, hyzk, whcd, jkzk,zzmm,zc,jg,sfzh,byxx,zytc
         cur.execute(sqlstr)
         conn.commit()
         print '插入成功！'
-        return 1
-    except:
-        return 0
+        return True
+    except Exception, e:
+        print e
+        return False
 
-def SQL_Insert_Realtion(zgbm, relation_list):
-    for record in relation_list:
-        sqlstr = "INSERT INTO cygx(zgbm,Brgx,xm,job) VALUES(%s,'%s','%s','%s')" %(zgbm, record[0], record[1], record[2])
+
+# 重置原档案记录
+def SQL_Replace(zgbm, xm, xb,mz, csny, hyzk, whcd, jkzk,zzmm,zc,jg,sfzh,byxx,zytc,hkszd,hkxz,xzz,zw,gzm,jspx,jlcf,smwt,tbrqm,tbrq,gsyj,scrq,ryxz,rcsj,ryzt,bz,szbm):
+    sqlstr = "Replace INTO m_dadj(zgbm,xm, xb,mz,csny,hyzk,whcd, jkzk,zzmm,zcbm,jg,sfzh,byxx,zytc,hkszd,hkxz,xzz,zw,gzm,jspx,jlcf,smwt,tbrqm,tbrq,gsyj,scrq,ryxz,rcsj,ryzt,bz,bmbm) VALUES('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s');"%(zgbm, xm, xb,mz, csny, hyzk, whcd, jkzk,zzmm,zc,jg,sfzh,byxx,zytc,hkszd,hkxz,xzz,zw,gzm,jspx,jlcf,smwt,tbrqm,tbrq,gsyj,scrq,ryxz,rcsj,ryzt,bz,szbm)
+
+    print sqlstr
+    try:
         cur.execute(sqlstr)
-    conn.commit()
-    print '成员关系插入成功！'
+        conn.commit()
+        print '插入成功！'
+        return True
+    except Exception, e:
+        print e
+        return False
+
+# 插入成员关系
+def SQL_Insert_Relation(zgbm, relation_list):
+    try:
+        for record in relation_list:
+            sqlstr = "INSERT INTO cygx(zgbm,Brgx,xm,job) VALUES(%s,'%s','%s','%s')" %(zgbm, record[0], record[1], record[2])
+            cur.execute(sqlstr)
+        conn.commit()
+        print '成员关系插入成功！'
+        return True
+    except Exception, e:
+        print e
+        return False
+
+# 重置成员关系
+def SQL_Replace_Relation(zgbm, relation_list):
+    sqlstr = "DELETE FROM cygx WHERE zgbm = %s" %zgbm # 先删除原有的成员记录
+    try:
+        cur.execute(sqlstr)
+        conn.commit()
+        for record in relation_list:
+            sqlstr = "INSERT INTO cygx(zgbm,Brgx,xm,job) VALUES(%s,'%s','%s','%s')" %(zgbm, record[0], record[1], record[2])
+            cur.execute(sqlstr)
+        conn.commit()
+        print '成员关系更新成功！'
+        return True
+    except Exception, e:
+        print e
+        return False
 
 
 # 查看存在外键的表
@@ -220,6 +275,7 @@ def SQL_Scan_Tables(ttype):
     return return_data
 
 
+# 修改编码表内容
 def SQL_Update_Tables(ttype, column_bm, column, update_content):
     if ttype == 'whcd':
         if column == 0:
@@ -236,10 +292,14 @@ def SQL_Update_Tables(ttype, column_bm, column, update_content):
             sqlstr = "UPDATE bm_zc SET zcbm = '%s' WHERE zcbm = '%s'" %(update_content, column_bm)
         else:
             sqlstr = "UPDATE bm_zc SET zcmc = '%s' WHERE zcbm = '%s'" %(update_content, column_bm)
-    cur.execute(sqlstr)
-    conn.commit()
-    print '修改成功！ '
-    return 1
+    try:
+        cur.execute(sqlstr)
+        conn.commit()
+        print '修改成功！ '
+        return True
+    except Exception, e:
+        print e
+        return False
 
 
 # 编码表信息插入
@@ -254,9 +314,10 @@ def SQL_Insert_Tables(ttype, new_bm, new_name):
         cur.execute(sqlstr)
         conn.commit()
         print '插入成功!'
+        return True
     except Exception, e:
         print e
-        return 0
+        return False
 
 
 # 编码表记录删除
@@ -271,17 +332,41 @@ def SQL_Del_Tables(ttype, column_bm):
         cur.execute(sqlstr)
         conn.commit()
         print '删除成功！ '
-        return 1
+        return True
     except Exception, e:
         print e
-        return 0
+        return False
+
+
+def SQL_Backup(filename):
+    try:
+        sh = "mysqldump -uroot -p1234 HR_Manage > /home/carrie/cuishiyao/Database_Pro/" + filename + ".sql"
+        os.system(sh)
+        print 'backup'
+        return True
+    except Exception, e:
+        print e
+        return False
+
+
+def SQL_Restore(filename):
+    try:
+        sh = "mysql -uroot -p1234 HR_Manage < /home/carrie/cuishiyao/Database_Pro/" + filename + ".sql"
+        os.system(sh)
+        return True
+    except Exception, e:
+        print ''
+        print e
+        return False
 
 
 
 
 if __name__ == '__main__':
+    print '1';
     # SQL_Scan()
     # SQL_Query_zgbm(1, '1')
     # SQL_Query_xm('张', '0')
     # SQL_Count('sum')
-    SQL_Person_Query('6')
+    # SQL_Person_Query('6')
+    SQL_Restore()

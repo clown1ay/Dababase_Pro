@@ -140,9 +140,14 @@ class Table_scan(QtGui.QDialog):
         column = self.tableView.currentIndex().column() # column=1代表修改具体名称， column=0代表修改编码
         column_bm = self.model.data(self.model.index(row, 0)).toString()# 得到修改字段的编码
         update_content = self.updateEdit.text()
-        Base_SQL.SQL_Update_Tables(ttype, column_bm, column, update_content)
-        Qupdate_content = QStandardItem(update_content)
-        self.model.setItem(row, column, Qupdate_content)
+        update = Base_SQL.SQL_Update_Tables(ttype, column_bm, column, update_content)
+        if update == True:
+            Qupdate_content = QStandardItem(update_content)
+            self.model.setItem(row, column, Qupdate_content)
+            response = QtGui.QMessageBox.information(self, 'Message',"修改成功！", QtGui.QMessageBox.Yes)
+        else:
+            response = QtGui.QMessageBox.information(self, 'Message',"修改失败！", QtGui.QMessageBox.Yes)
+
 
         # 插入新的信息
     def insert_Button_Event(self):
@@ -150,7 +155,12 @@ class Table_scan(QtGui.QDialog):
         ttype = self.Type_trans(table_type)# 得到表类型
         new_bm = self.new_bmEdit.text()
         new_name = self.new_nameEdit.text()
-        Base_SQL.SQL_Insert_Tables(ttype, new_bm, new_name)
+        insert = Base_SQL.SQL_Insert_Tables(ttype, new_bm, new_name)
+        if insert == True:
+            response = QtGui.QMessageBox.information(self, 'Message',"插入成功！", QtGui.QMessageBox.Yes)
+        else:
+            response = QtGui.QMessageBox.information(self, 'Message',"插入失败！", QtGui.QMessageBox.Yes)
+
 
     def del_Button_Event(self):
         table_type = str(self.chooseBox.currentText())
@@ -158,8 +168,13 @@ class Table_scan(QtGui.QDialog):
         row = self.tableView.currentIndex().row()
         column_bm = self.model.data(self.model.index(row, 0)).toString()# 获取row行，0列数据，即该行编码
         print column_bm
-        Base_SQL.SQL_Del_Tables(ttype, column_bm)
-        self.model.removeRow(row)
+        delete = Base_SQL.SQL_Del_Tables(ttype, column_bm)
+        if delete == True:
+            self.model.removeRow(row)
+            response = QtGui.QMessageBox.information(self, 'Message',"删除成功！", QtGui.QMessageBox.Yes)
+        else:
+            response = QtGui.QMessageBox.information(self, 'Message',"删除失败！", QtGui.QMessageBox.Yes)
+
 
 
 

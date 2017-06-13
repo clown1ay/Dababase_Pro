@@ -321,7 +321,6 @@ class Insert_Page(QtGui.QDialog):
         bz = self.bzText.toPlainText()
         # print xm, xb,mz, csny, hyzk, whcd, jkzk,zzmm,jg,sfzh,byxx,zytc,hkszd,
         # hkxz,xzz,zw,gzm,jspx,jlcf,smwt,tbrqm,tbrq,gsyj,scrq,ryxz,rcsj,ryzt,bz,szbm
-        print '---'
         resp = Base_SQL.SQL_Insert(zgbm, xm, xb,mz, csny, hyzk, whcd, jkzk,zzmm,zc,jg,sfzh,byxx,zytc,hkszd,hkxz,xzz,zw,gzm,jspx,jlcf,smwt,tbrqm,tbrq,gsyj,scrq,ryxz,rcsj,ryzt,bz,szbm)
 
         relation_list = []
@@ -344,11 +343,14 @@ class Insert_Page(QtGui.QDialog):
             relation_list.append([Mem_relation_3, Mem_xm_3, Mem_job_3])
 
         if relation_list != []:
-            Base_SQL.SQL_Insert_Realtion(zgbm, relation_list)
+            resp_2 = Base_SQL.SQL_Insert_Relation(zgbm, relation_list)
+        else:
+            resp_2 = True
 
-
-
-
+        if resp_2 == True and resp == True:
+            response = QtGui.QMessageBox.information(self, 'Message',"录入成功！", QtGui.QMessageBox.Yes)
+        else:
+            response = QtGui.QMessageBox.information(self, 'Message',"录入失败！", QtGui.QMessageBox.Yes)
 
 def main():
     app = QtGui.QApplication(sys.argv)

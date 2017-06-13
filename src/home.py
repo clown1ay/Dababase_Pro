@@ -6,6 +6,7 @@ from PyQt4.QtCore import *
 from PyQt4 import QtGui
 from PyQt4 import QtCore
 from ctrl_page import Ctrl_Function
+import Base_SQL
 
  # PyQt4中文显示
 mycode = locale.getpreferredencoding()
@@ -54,7 +55,7 @@ class Home(QtGui.QDialog):
         self.userEdit.move(310, 180)
 
         self.passwordEdit = QtGui.QLineEdit(self)
-        self.passwordEdit.setEchoMode(QLineEdit.Password);
+        self.passwordEdit.setEchoMode(QLineEdit.Password)
         self.passwordEdit.move(310, 250)
 
         self.quit_Button = QtGui.QPushButton('退出', self)
@@ -82,10 +83,10 @@ class Home(QtGui.QDialog):
     def login_Button_Event(self):
         username = self.userEdit.text()
         password = self.passwordEdit.text()
-        if username == 'admin' and password == 'admin123':
-            print '0'
+        login = Base_SQL.SQL_Login(username, password)
+        if login == True:
+            print '登录成功！ '
             self.hide()
-            # self.exec_()
             ui = Ctrl_Function()
             ui.initUI()
             ui.setGeometry(500, 300, 700, 500)
@@ -93,8 +94,7 @@ class Home(QtGui.QDialog):
             ui.exec_()
             # self.show()
         else:
-            print '---'
-            pass
+            response = QtGui.QMessageBox.information(self, 'Message',"登录失败，请重新登录！", QtGui.QMessageBox.Yes)
 
 
 def main():
