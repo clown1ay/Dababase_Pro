@@ -278,6 +278,40 @@ class Insert_Page(QtGui.QDialog):
         self.setWindowTitle('企业人事档案管理系统--信息录入')
         # self.show()
 
+    def Clear_info(self):
+        # self.jkzkEdit.setText(str(person_res[7]))
+        self.zgbmEdit.setText('')
+        self.xmEdit.setText('')
+        self.xbEdit.setText('')
+        self.mzEdit.setText('')
+        self.csnyEdit.setText('')
+        self.hyzkEdit.setText('')
+        self.jgEdit.setText('')
+        self.sfzhEdit.setText('')
+        self.byxxEdit.setText('')
+        self.zytcEdit.setText('')
+        self.hkszdEdit.setText('')
+        self.xzzEdit.setText('')
+        self.tbrqmEdit.setText('')
+        self.tbrqEdit.setText('')
+        self.gsyjEdit.setText('')
+        self.scrqEdit.setText('')
+        self.rcsjEdit.setText('')
+        self.jspxText.setText('')
+        self.jlcfText.setText('')
+        self.bzText.setText('')
+        self.smwtText.setText('')
+
+        self.Mem_relation_Edit_1.setText('')
+        self.Mem_xm_Edit_1.setText('')
+        self.Mem_job_Edit_1.setText('')
+        self.Mem_relation_Edit_2.setText('')
+        self.Mem_xm_Edit_2.setText('')
+        self.Mem_job_Edit_2.setText('')
+        self.Mem_relation_Edit_3.setText('')
+        self.Mem_xm_Edit_3.setText('')
+        self.Mem_job_Edit_3.setText('')
+
     def Commit_Button_Event(self):
         # print self.rcsjEdit.text()
         # print self.bzText.toPlainText()#  获取文本框内容
@@ -349,6 +383,7 @@ class Insert_Page(QtGui.QDialog):
 
         if resp_2 == True and resp == True:
             response = QtGui.QMessageBox.information(self, 'Message',"录入成功！", QtGui.QMessageBox.Yes)
+            self.Clear_info()
         else:
             response = QtGui.QMessageBox.information(self, 'Message',"录入失败！", QtGui.QMessageBox.Yes)
 

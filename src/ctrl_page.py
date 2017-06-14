@@ -83,18 +83,18 @@ class Ctrl_Function(QtGui.QDialog):
         '''
 
      def Scan_Button_Event(self):
-         self.hide()
-         print '---'
+         # self.hide()
          ui = Scan_Page()
          ui.setGeometry(500, 300, 700, 550)
          ui.Get_Info()
          ui.show()
          ui.exec_()
+         print 'scan ---'
          self.show()
+         print 'scan ==='
 
      def Query_Button_Event(self):
-        self.hide()
-        print '---'
+        # self.hide()
         ui = Query_Page()
         ui.setGeometry(500, 300, 700, 550)
         ui.show()
@@ -102,8 +102,7 @@ class Ctrl_Function(QtGui.QDialog):
         self.show()
 
      def Insert_Button_Event(self):
-        print '===='
-        self.hide()
+        # self.hide()
         ui = Insert_Page()
         ui.setGeometry(500, 300, 750, 800)
         ui.initUI()
@@ -112,7 +111,7 @@ class Ctrl_Function(QtGui.QDialog):
         self.show()
 
      def Count_Button_Event(self):
-        self.hide()
+        # self.hide()
         ui = Count_Page()
         ui.initUI()
         ui.setGeometry(500, 300, 700, 500)
@@ -121,7 +120,7 @@ class Ctrl_Function(QtGui.QDialog):
         self.show()
 
      def Scan_Table_Button_Event(self):
-        self.hide()
+        # self.hide()
         ui = Table_scan()
         ui.initUI()
         ui.setGeometry(500, 300, 700, 500)
@@ -130,7 +129,7 @@ class Ctrl_Function(QtGui.QDialog):
         self.show()
 
      def Person_Page_Button_Event(self):
-        self.hide()
+        # self.hide()
         ui = Person_Page()
         ui.initUI()
         ui.setGeometry(500, 300, 750, 800)
@@ -139,7 +138,7 @@ class Ctrl_Function(QtGui.QDialog):
         self.show()
 
      def Manage_Button_Event(self):
-        self.hide()
+        # self.hide()
         ui = Sys_Page()
         ui.initUI()
         ui.setGeometry(500, 300, 700, 500)

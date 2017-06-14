@@ -76,9 +76,9 @@ class Home(QtGui.QDialog):
 
 
         # setGeometry(起点横坐标, 起点纵坐标, 宽, 高)
-        self.setGeometry(500, 300, 700, 500)
+        # self.setGeometry(500, 300, 700, 500)
         self.setWindowTitle('企业人事档案管理系统')
-        self.show()
+        # self.show()
 
     def login_Button_Event(self):
         username = self.userEdit.text()
@@ -99,10 +99,11 @@ class Home(QtGui.QDialog):
 
 def main():
     app = QtGui.QApplication(sys.argv)
-    # form = QtGui.QWidget()
     ex = Home()
     ex.initUI()
-    # form.show()
+    ex.setGeometry(500, 300, 700, 500)
+    ex.show()
+    # ex.exec_()
     sys.exit(app.exec_())
 
 

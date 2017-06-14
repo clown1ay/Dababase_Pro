@@ -10,19 +10,14 @@ import os
 import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
-print '1'
 # 获取系统时间 time.strftime('%Y-%m-%d-%H:%M',time.localtime(time.time()))
 
 conn=MySQLdb.connect(host='localhost',user='root',passwd='1234',port=3306,charset = 'utf8')
 cur=conn.cursor()
-# cur.execute("use HR_Manage")
-
-# conn =pymysql.connect(host='127.0.0.1', user='root', passwd='1234', charset='utf8')
- #cur = conn.cursor()
-
 cur.execute("use information_schema")
 cur.execute("select COLUMN_NAME from COLUMNS where TABLE_NAME = 'm_dadj';")
 m_dadj_column_names = cur.fetchall()
+
 
 cur.execute("use HR_Manage")
 
@@ -31,21 +26,12 @@ def SQL_Scan():
     single_dict = {}
     data_dict = {}
     return_dict = {}
+    cur.execute("use HR_Manage")
     sqlstr = "SELECT * FROM m_dadj";
     count = cur.execute(sqlstr)
     res = cur.fetchall()
-    # print res
-    '''
-    for item in res:
-        for i in range(1, len(item)):
-            single_dict[str(m_dadj_column_names[i][0])] = i
-        zgbm = "%03d"%int(item[0])
-        data_dict[zgbm] = single_dict
-        single_dict = {}
-    '''
     return_dict['length'] = int(count)
     return_dict['data'] = res
-    # print len(return_dict['data'][0])
     return return_dict
 
 
@@ -242,6 +228,7 @@ def SQL_Insert_Relation(zgbm, relation_list):
         print e
         return False
 
+
 # 重置成员关系
 def SQL_Replace_Relation(zgbm, relation_list):
     sqlstr = "DELETE FROM cygx WHERE zgbm = %s" %zgbm # 先删除原有的成员记录
@@ -251,7 +238,6 @@ def SQL_Replace_Relation(zgbm, relation_list):
         for record in relation_list:
             sqlstr = "INSERT INTO cygx(zgbm,Brgx,xm,job) VALUES(%s,'%s','%s','%s')" %(zgbm, record[0], record[1], record[2])
             cur.execute(sqlstr)
-        conn.commit()
         print '成员关系更新成功！'
         return True
     except Exception, e:
@@ -350,20 +336,17 @@ def SQL_Backup(filename):
 
 
 def SQL_Restore(filename):
+    conn.close()
     try:
         sh = "mysql -uroot -p1234 HR_Manage < /home/carrie/cuishiyao/Database_Pro/" + filename + ".sql"
         os.system(sh)
         return True
     except Exception, e:
-        print ''
         print e
         return False
 
 
-
-
 if __name__ == '__main__':
-    print '1';
     # SQL_Scan()
     # SQL_Query_zgbm(1, '1')
     # SQL_Query_xm('张', '0')

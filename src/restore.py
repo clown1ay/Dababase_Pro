@@ -14,8 +14,6 @@ sys.setdefaultencoding('utf-8')
 r_file = open('/home/carrie/cuishiyao/Database_Pro/HR_backup.sql.sql')
 lines = r_file.readlines()
 r_file.close()
-
-# content = content.replace('\n', '')
 sql = ''
 for line in lines:
     line = line.strip()
